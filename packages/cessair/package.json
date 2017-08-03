@@ -1,0 +1,34 @@
+{
+    "name": "cessair",
+    "version": "0.0.0",
+    "description": "A catalyst for making robust and stable core of either module or service.",
+    "keywords": [
+        "cessair",
+        "helper",
+        "utility",
+        "catalyst",
+        "extension"
+    ],
+    "homepage": "https://github.com/cessair/cessair#readme",
+    "bugs": {
+        "url": "https://github.com/cessair/cessair/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Yongbin Min",
+        "email": "contact@cichol.com",
+        "url": "https://www.cichol.com/"
+    },
+    "main": "libraries/cessair.js",
+    "directories": {
+        "lib": "libraries",
+        "test": "tests"
+    },
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/cessair",
+    "scripts": {},
+    "dependencies": {
+        "@cessair/common": "*",
+        "@cessair/core": "*"
+    },
+    "devDependencies": {}
+}

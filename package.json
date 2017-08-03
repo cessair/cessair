@@ -1,0 +1,33 @@
+{
+    "name": "cessair",
+    "version": "0.0.0",
+    "description": "A catalyst for making robust and stable core of either module or service.",
+    "keywords": [
+        "cessair",
+        "helper",
+        "utility",
+        "catalyst",
+        "extension"
+    ],
+    "homepage": "https://github.com/cessair/cessair#readme",
+    "bugs": {
+        "url": "https://github.com/cessair/cessair/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Yongbin Min",
+        "email": "contact@cichol.com",
+        "url": "https://www.cichol.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cessair/cessair.git"
+    },
+    "scripts": {
+        "prepublish": "node -e \"console.log(require('chalk').white.bgRed('\\nRoot package is not for publishing.\\n')) || process.exit(1)\""
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "chalk": "^2.0.1"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "name": "@cessair/core",
+    "version": "0.0.0",
+    "description": "The core logic of Cessair.",
+    "keywords": [
+        "cessair",
+        "helper",
+        "utility",
+        "catalyst",
+        "extension"
+    ],
+    "homepage": "https://github.com/cessair/cessair#readme",
+    "bugs": {
+        "url": "https://github.com/cessair/cessair/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Yongbin Min",
+        "email": "contact@cichol.com",
+        "url": "https://www.cichol.com/"
+    },
+    "main": "libraries/core.js",
+    "directories": {
+        "lib": "libraries",
+        "test": "tests"
+    },
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/core",
+    "scripts": {},
+    "dependencies": {},
+    "devDependencies": {}
+}

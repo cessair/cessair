@@ -1,0 +1,31 @@
+{
+    "name": "@cessair/common",
+    "version": "0.0.0",
+    "description": "The common features using to implement Cessair.",
+    "keywords": [
+        "cessair",
+        "helper",
+        "utility",
+        "catalyst",
+        "extension"
+    ],
+    "homepage": "https://github.com/cessair/cessair#readme",
+    "bugs": {
+        "url": "https://github.com/cessair/cessair/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Yongbin Min",
+        "email": "contact@cichol.com",
+        "url": "https://www.cichol.com/"
+    },
+    "main": "libraries/common.js",
+    "directories": {
+        "lib": "libraries",
+        "test": "tests"
+    },
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/common",
+    "scripts": {},
+    "dependencies": {},
+    "devDependencies": {}
+}
