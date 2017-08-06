@@ -1,5 +1,16 @@
+# All logs
+*.log
+
 # Dependency directory
 node_modules
 
-# Transcompiled library codes
+# Transpiled library codes
 libraries
+
+# Babel configuration
+.babelrc
+
+# Dependency files for publishing
+packages/*/.babelrc
+packages/*/.npmignore
+packages/*/gulpfile.babel.js

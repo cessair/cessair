@@ -1,8 +1,7 @@
 {
-    "private": true,
-    "name": "cessair-core",
+    "name": "",
     "version": "0.0.0",
-    "description": "The core logic of Cessair.",
+    "description": "",
     "keywords": [
         "cessair",
         "helper",
@@ -16,16 +15,15 @@
     },
     "license": "MIT",
     "author": {
-        "name": "Yongbin Min",
-        "email": "contact@cichol.com",
-        "url": "https://www.cichol.com/"
+        "name": "",
+        "email": ""
     },
     "main": "libraries",
     "directories": {
         "lib": "libraries",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/core",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/",
     "scripts": {
         "prepublishOnly": "yarn run bootstrap:copy",
         "postpublish": "yarn run bootstrap:remove",
@@ -37,7 +35,9 @@
         "bootstrap:remove": "rm ./.babelrc ./.npmignore ./gulpfile.babel.js"
     },
     "dependencies": {
-        "babel-runtime": "^6.25.0"
+        "babel-runtime": "^6.23.0",
+        "cessair-common": "",
+        "cessair-core": ""
     },
     "devDependencies": {
         "babel-core": "^6.25.0",
