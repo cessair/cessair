@@ -7,7 +7,7 @@ function isAbleToBeType(target) {
 
 function analyzeInheritance(heir, heritor) {
     return heir === heritor || Boolean(heritor) && (
-        heritor === Function ? heritor.isPrototypeOf(heir) : heir instanceof heritor
+        heritor !== Function ? heritor.isPrototypeOf(heir) : heir instanceof heritor
     );
 }
 

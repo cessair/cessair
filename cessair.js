@@ -79,11 +79,14 @@ yargs // eslint-disable-line
             let spinner;
             const result = [];
 
-            const [ cessairJSON, commonVersion, coreVersion, indexTemplate, packageTemplate ] = yield Bluebird.all([
+            const [
+                cessairJSON, commonVersion, coreVersion, sourceTemplate, testTemplate, packageTemplate
+            ] = yield Bluebird.all([
                 readAsync('./packages/cessair/package.json', 'json'),
                 readAsync('./packages/common/package.json', 'json').then(({ version }) => version),
                 readAsync('./packages/core/package.json', 'json').then(({ version }) => version),
-                readAsync('./templates/index.js'),
+                readAsync('./templates/sources/index.js'),
+                readAsync('./templates/tests/index.js'),
                 readAsync('./templates/package.json', 'json')
             ]);
 
@@ -124,7 +127,8 @@ yargs // eslint-disable-line
                 }, {});
 
                 yield Bluebird.all([
-                    [ `${path}/sources/index.js`, indexTemplate ],
+                    [ `${path}/sources/index.js`, sourceTemplate ],
+                    [ `${path}/tests/index.js`, testTemplate ],
                     [ `${path}/README.md`, `# Cessair - ${
                         name.length > 1 ? name[0].toUpperCase() + name.slice(1) : name.toUpperCase()
                     }` ],

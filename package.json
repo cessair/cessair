@@ -30,9 +30,11 @@
         "inspect": "node --require ./packages/cessair --inspect",
         "inspect:direct": "node --require ./packages/cessair --inspect",
         "prebuild": "lerna clean --yes --loglevel silent && node cessair babelrc",
-        "build": "lerna bootstrap --loglevel silent"
+        "build": "lerna bootstrap --loglevel silent",
+        "test": "eslint packages/*/sources && ava"
     },
     "dependencies": {
+        "ava": "^0.21.0",
         "babel-cli": "^6.24.1",
         "babel-eslint": "^7.2.3",
         "babel-plugin-syntax-object-rest-spread": "^6.13.0",
@@ -62,5 +64,10 @@
         "node": ">=6.6.0",
         "npm": ">=5.3.0",
         "yarn": ">=0.27.5"
+    },
+    "ava": {
+        "files": [
+            "packages/*/tests/*.js"
+        ]
     }
 }
