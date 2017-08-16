@@ -29,7 +29,7 @@
         "preinspect": "git diff-index --quiet HEAD -- || yarn build --silent",
         "inspect": "node --require ./packages/cessair --inspect",
         "inspect:direct": "node --require ./packages/cessair --inspect",
-        "prebuild": "lerna clean --yes --loglevel silent && node cessair babelrc",
+        "prebuild": "lerna clean --yes --loglevel silent && lerna exec -- cp ../../cessair.js .",
         "build": "lerna bootstrap --loglevel silent",
         "test": "eslint packages/*/sources && ava"
     },
@@ -62,7 +62,6 @@
     },
     "engines": {
         "node": ">=6.6.0",
-        "npm": ">=5.3.0",
         "yarn": ">=0.27.5"
     },
     "ava": {

@@ -13,4 +13,4 @@ libraries
 # Dependency files for publishing
 packages/*/.babelrc
 packages/*/.npmignore
-packages/*/gulpfile.babel.js
+packages/*/cessair.js
