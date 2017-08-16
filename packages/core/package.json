@@ -1,6 +1,6 @@
 {
     "name": "cessair-core",
-    "version": "0.1.0-delta",
+    "version": "0.1.0-epsilon",
     "description": "The core logic of Cessair.",
     "keywords": [
         "cessair",
@@ -24,7 +24,7 @@
         "lib": "libraries",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/core",
+    "repository": "https://github.com/cessair/cessair/tree/develop/packages/core",
     "scripts": {
         "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
         "postinstall": "yarn build",

@@ -1,6 +1,6 @@
 {
     "name": "cessair-common",
-    "version": "0.1.0-delta",
+    "version": "0.1.0-epsilon",
     "description": "The common features using to implement Cessair.",
     "keywords": [
         "cessair",
@@ -24,7 +24,7 @@
         "lib": "libraries",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/common",
+    "repository": "https://github.com/cessair/cessair/tree/develop/packages/common",
     "scripts": {
         "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
         "postinstall": "yarn build",
@@ -47,7 +47,7 @@
         "babel-plugin-transform-object-rest-spread": "^6.23.0",
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-runtime": "^6.25.0",
-        "cessair-core": "0.1.0-delta",
+        "cessair-core": "0.1.0-epsilon",
         "yarn": "^0.27.5"
     },
     "devDependencies": {
