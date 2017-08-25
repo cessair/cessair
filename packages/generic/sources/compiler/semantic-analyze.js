@@ -115,7 +115,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
                 return State.End;
             }
 
-            switch(nextType.heir) {
+            switch(nextType.representing) {
             case Token.ConstraintPrimitive: {
                 typeParameter.constraint = Constraint.Primitive;
 
@@ -150,7 +150,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
 
             Object.assign(typeParameter, { identifier });
 
-            switch(nextType.heir) {
+            switch(nextType.representing) {
             case Token.Extends: {
                 return State.Extending;
             }
@@ -188,7 +188,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
         [State.ExtendingIdentifier]({ position, typeParameter, current, next, currentType, nextType }) {
             const { constraint, extending } = typeParameter;
 
-            switch(currentType.heir) {
+            switch(currentType.representing) {
             case Token.Identifier: {
                 const identifier = identifiers[position];
 
@@ -216,7 +216,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             }
             }
 
-            switch(nextType.heir) {
+            switch(nextType.representing) {
             case Token.ConjunctionNext: {
                 return State.Start;
             }
@@ -256,7 +256,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
 
             const { constraint } = typeParameter;
 
-            switch(nextType.heir) {
+            switch(nextType.representing) {
             case Token.Identifier: {
                 const identifier = identifiers[position + 1];
 

@@ -1,7 +1,7 @@
 import { deepStrictEqual } from 'assert';
 import { Type } from '@cessair/core';
-import lexicalAnalyze from './generic-compiler/lexical-analyze';
-import semanticAnalyze from './generic-compiler/semantic-analyze';
+import lexicalAnalyze from './compiler/lexical-analyze';
+import semanticAnalyze from './compiler/semantic-analyze';
 
 const containerCache = new WeakMap();
 const Generic = Symbol('Generic');
