@@ -1,1 +1,1 @@
-import 'cessair-core';
+import '@cessair/core';

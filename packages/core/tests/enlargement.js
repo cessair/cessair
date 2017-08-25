@@ -1,3 +1,4 @@
+import 'source-map-support/register';
 import test from 'ava';
 import '../libraries/enlargement';
 

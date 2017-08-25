@@ -59,6 +59,7 @@
             120
         ],
         "no-await-in-loop": "off",
+        "no-continue": "off",
         "no-loop-func": "off",
         "no-mixed-operators": "off",
         "no-prototype-builtins": "off",

@@ -1,4 +1,4 @@
-# cessair-core
+# @cessair/core
 
 > The core logic of Cessair.
 

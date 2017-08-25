@@ -1,4 +1,3 @@
-import { Type } from 'cessair-core';
-import 'cessair-common';
-
-export default { Type };
+export * from '@cessair/core';
+export * from '@cessair/common';
+export generic from '@cessair/generic';

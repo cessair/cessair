@@ -1,6 +1,6 @@
-# @cessair/common
+# @cessair/generic
 
-> The common features using to implement Cessair.
+> The interface for generic programming.
 
 - [License](#license)
 

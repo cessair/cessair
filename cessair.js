@@ -106,15 +106,15 @@ yargs // eslint-disable-line
                 yield dirAsync(`${path}/sources`);
 
                 const packageJSON = Object.assign({}, packageTemplate, {
-                    name: `cessair-${name}`,
+                    name: `@cessair/${name}`,
                     repository: packageTemplate.repository + name,
                     author: {
                         name: (yield execa('git', [ 'config', '--global', 'user.name' ])).stdout.trim(),
                         email: (yield execa('git', [ 'config', '--global', 'user.email' ])).stdout.trim()
                     },
                     dependencies: Object.assign({}, packageTemplate.dependencies, {
-                        'cessair-common': `^${commonVersion}`,
-                        'cessair-core': `^${coreVersion}`
+                        '@cessair/common': `^${commonVersion}`,
+                        '@cessair/core': `^${coreVersion}`
                     })
                 });
 
@@ -129,9 +129,15 @@ yargs // eslint-disable-line
                 yield Bluebird.all([
                     [ `${path}/sources/index.js`, sourceTemplate ],
                     [ `${path}/tests/index.js`, testTemplate ],
-                    [ `${path}/README.md`, `# Cessair - ${
-                        name.length > 1 ? name[0].toUpperCase() + name.slice(1) : name.toUpperCase()
-                    }` ],
+
+                    [ `${path}/README.md`, `${[
+                        `# @cessair/${name}`,
+                        '> Description',
+                        '- [License](#license)',
+                        '## License',
+                        '[MIT License](https://github.com/cessair/cessair/blob/develop/LICENSE).'
+                    ].join('\n\n')}\n` ],
+
                     [ `${path}/package.json`, stringify(packageJSON) ],
                     [ './packages/cessair/package.json', stringify(cessairJSON) ]
                 ].map(args => writeAsync(...args)));

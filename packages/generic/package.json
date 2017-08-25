@@ -1,7 +1,7 @@
 {
-    "name": "cessair",
+    "name": "@cessair/generic",
     "version": "1.0.0",
-    "description": "A catalyst for making robust and stable core of either module or service.",
+    "description": "The interface for generic programming.",
     "keywords": [
         "cessair",
         "helper",
@@ -24,7 +24,7 @@
         "lib": "libraries",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/develop/packages/cessair",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/generic",
     "scripts": {
         "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
         "postinstall": "yarn build",
@@ -35,7 +35,6 @@
     "dependencies": {
         "@cessair/common": "^1.0.0",
         "@cessair/core": "^1.0.0",
-        "@cessair/generic": "^1.0.0",
         "babel-cli": "^6.24.1",
         "babel-plugin-syntax-object-rest-spread": "^6.13.0",
         "babel-plugin-transform-async-generator-functions": "^6.24.1",
@@ -66,7 +65,7 @@
     },
     "ava": {
         "require": "babel-register",
-		"babel": "inherit",
+        "babel": "inherit",
         "files": [
             "tests/*.js"
         ]
