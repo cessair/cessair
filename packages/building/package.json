@@ -17,9 +17,9 @@
     "author": {
         "name": "Yongbin Min",
         "email": "contact@cichol.com",
-        "url": "https://www.cichol.com/"
+        "url": "https://cessair.cichol.com/"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/generic",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/building",
     "dependencies": {
         "babel-cli": "^6.24.1",
         "babel-plugin-syntax-object-rest-spread": "^6.13.0",

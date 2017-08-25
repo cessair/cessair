@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "cessair",
-    "version": "0.0.0",
+    "version": "1.0.1",
     "description": "A catalyst for making robust and stable core of either module or service.",
     "keywords": [
         "cessair",
@@ -18,7 +18,7 @@
     "author": {
         "name": "Yongbin Min",
         "email": "contact@cichol.com",
-        "url": "https://www.cichol.com/"
+        "url": "https://cessair.cichol.com/"
     },
     "repository": {
         "type": "git",

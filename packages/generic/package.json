@@ -1,6 +1,6 @@
 {
     "name": "@cessair/generic",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "The interface for generic programming.",
     "keywords": [
         "cessair",
@@ -17,7 +17,7 @@
     "author": {
         "name": "Yongbin Min",
         "email": "contact@cichol.com",
-        "url": "https://www.cichol.com/"
+        "url": "https://cessair.cichol.com/"
     },
     "main": "libraries",
     "directories": {
@@ -34,8 +34,8 @@
     },
     "dependencies": {
         "@cessair/building": "^1.0.0",
-        "@cessair/common": "^1.0.0",
-        "@cessair/core": "^1.0.0"
+        "@cessair/common": "^1.0.1",
+        "@cessair/core": "^1.0.1"
     },
     "devDependencies": {
         "ava": "^0.21.0",

@@ -16,7 +16,8 @@
     "license": "MIT",
     "author": {
         "name": "",
-        "email": ""
+        "email": "",
+        "url": "https://cessair.cichol.com/"
     },
     "main": "libraries",
     "directories": {

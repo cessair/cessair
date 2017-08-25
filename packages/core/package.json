@@ -1,6 +1,6 @@
 {
     "name": "@cessair/core",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "The core logic of Cessair.",
     "keywords": [
         "cessair",
@@ -17,14 +17,14 @@
     "author": {
         "name": "Yongbin Min",
         "email": "contact@cichol.com",
-        "url": "https://www.cichol.com/"
+        "url": "https://cessair.cichol.com/"
     },
     "main": "libraries",
     "directories": {
         "lib": "libraries",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/develop/packages/core",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/core",
     "scripts": {
         "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
         "postinstall": "yarn build",
