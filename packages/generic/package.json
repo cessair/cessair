@@ -33,23 +33,9 @@
         "test": "eslint sources && ava"
     },
     "dependencies": {
+        "@cessair/building": "^1.0.0",
         "@cessair/common": "^1.0.0",
-        "@cessair/core": "^1.0.0",
-        "babel-cli": "^6.24.1",
-        "babel-plugin-syntax-object-rest-spread": "^6.13.0",
-        "babel-plugin-transform-async-generator-functions": "^6.24.1",
-        "babel-plugin-transform-async-to-generator": "^6.24.1",
-        "babel-plugin-transform-class-properties": "^6.24.1",
-        "babel-plugin-transform-decorators-legacy": "^1.3.4",
-        "babel-plugin-transform-do-expressions": "^6.22.0",
-        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-        "babel-plugin-transform-exponentiation-operator": "^6.24.1",
-        "babel-plugin-transform-export-extensions": "^6.22.0",
-        "babel-plugin-transform-function-bind": "^6.22.0",
-        "babel-plugin-transform-object-rest-spread": "^6.23.0",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-runtime": "^6.25.0",
-        "yarn": "^0.27.5"
+        "@cessair/core": "^1.0.0"
     },
     "devDependencies": {
         "ava": "^0.21.0",

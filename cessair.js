@@ -80,9 +80,10 @@ yargs // eslint-disable-line
             const result = [];
 
             const [
-                cessairJSON, commonVersion, coreVersion, sourceTemplate, testTemplate, packageTemplate
+                cessairJSON, buildingVersion, commonVersion, coreVersion, sourceTemplate, testTemplate, packageTemplate
             ] = yield Bluebird.all([
                 readAsync('./packages/cessair/package.json', 'json'),
+                readAsync('./packages/building/package.json', 'json').then(({ version }) => version),
                 readAsync('./packages/common/package.json', 'json').then(({ version }) => version),
                 readAsync('./packages/core/package.json', 'json').then(({ version }) => version),
                 readAsync('./templates/sources/index.js'),
@@ -113,12 +114,13 @@ yargs // eslint-disable-line
                         email: (yield execa('git', [ 'config', '--global', 'user.email' ])).stdout.trim()
                     },
                     dependencies: Object.assign({}, packageTemplate.dependencies, {
+                        '@cessair/building': `^${buildingVersion}`,
                         '@cessair/common': `^${commonVersion}`,
                         '@cessair/core': `^${coreVersion}`
                     })
                 });
 
-                cessairJSON.dependencies[`cessair-${name}`] = `^${packageJSON.version}`;
+                cessairJSON.dependencies[`@cessair/${name}`] = `^${packageJSON.version}`;
 
                 cessairJSON.dependencies = Object.keys(cessairJSON.dependencies).sort().reduce((object, key) => {
                     object[key] = cessairJSON.dependencies[key]; // eslint-disable-line
