@@ -1,0 +1,16 @@
+# All logs
+*.log
+
+# Dependency directory
+node_modules
+
+# Transpiled library codes
+libraries
+
+# Babel configuration
+.babelrc
+
+# Dependency files for publishing
+packages/*/.babelrc
+packages/*/.npmignore
+packages/*/cessair.js

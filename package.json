@@ -1,0 +1,74 @@
+{
+    "private": true,
+    "name": "cessair",
+    "version": "1.0.1",
+    "description": "A catalyst for making robust and stable core of either module or service.",
+    "keywords": [
+        "cessair",
+        "helper",
+        "utility",
+        "catalyst",
+        "extension"
+    ],
+    "homepage": "https://github.com/cessair/cessair#readme",
+    "bugs": {
+        "url": "https://github.com/cessair/cessair/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Yongbin Min",
+        "email": "contact@cichol.com",
+        "url": "https://cessair.cichol.com/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cessair/cessair.git"
+    },
+    "scripts": {
+        "prepublishOnly": "node cessair error 'Root package is not for publishing.'",
+        "preinspect": "git diff-index --quiet HEAD -- || yarn build --silent",
+        "inspect": "node --require ./packages/cessair --inspect",
+        "inspect:direct": "node --require ./packages/cessair --inspect",
+        "prebuild": "lerna clean --yes --loglevel silent && lerna exec -- cp ../../cessair.js .",
+        "build": "lerna bootstrap --loglevel silent",
+        "test": "eslint packages/*/sources && ava"
+    },
+    "dependencies": {
+        "ava": "^0.21.0",
+        "babel-cli": "^6.24.1",
+        "babel-eslint": "^7.2.3",
+        "babel-plugin-syntax-object-rest-spread": "^6.13.0",
+        "babel-plugin-transform-async-generator-functions": "^6.24.1",
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-plugin-transform-decorators-legacy": "^1.3.4",
+        "babel-plugin-transform-do-expressions": "^6.22.0",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+        "babel-plugin-transform-exponentiation-operator": "^6.24.1",
+        "babel-plugin-transform-export-extensions": "^6.22.0",
+        "babel-plugin-transform-function-bind": "^6.22.0",
+        "babel-plugin-transform-object-rest-spread": "^6.23.0",
+        "babel-plugin-transform-runtime": "^6.23.0",
+        "bluebird": "^3.5.0",
+        "eslint": "^4.4.1",
+        "eslint-config-airbnb-base": "^11.3.1",
+        "eslint-plugin-import": "^2.7.0",
+        "execa": "^0.8.0",
+        "fs-jetpack": "^1.2.0",
+        "lerna": "^2.0.0",
+        "ora": "^1.3.0",
+        "semver": "^5.4.1",
+        "yargs": "^8.0.2"
+    },
+    "engines": {
+        "node": ">=6.6.0",
+        "yarn": ">=0.27.5"
+    },
+    "ava": {
+        "require": "babel-register",
+		"babel": "inherit",
+        "files": [
+            "packages/*/tests/*.js"
+        ]
+    }
+}

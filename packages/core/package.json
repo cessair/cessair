@@ -1,0 +1,57 @@
+{
+    "name": "@cessair/core",
+    "version": "1.0.1",
+    "description": "The core logic of Cessair.",
+    "keywords": [
+        "cessair",
+        "helper",
+        "utility",
+        "catalyst",
+        "extension"
+    ],
+    "homepage": "https://github.com/cessair/cessair#readme",
+    "bugs": {
+        "url": "https://github.com/cessair/cessair/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Yongbin Min",
+        "email": "contact@cichol.com",
+        "url": "https://cessair.cichol.com/"
+    },
+    "main": "libraries",
+    "directories": {
+        "lib": "libraries",
+        "test": "tests"
+    },
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/core",
+    "scripts": {
+        "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
+        "postinstall": "yarn build",
+        "prebuild": "node cessair babelrc",
+        "build": "babel sources --out-dir libraries --source-maps inline --quiet",
+        "test": "eslint sources && ava"
+    },
+    "dependencies": {
+        "@cessair/building": "^1.0.0"
+    },
+    "devDependencies": {
+        "ava": "^0.21.0",
+        "babel-eslint": "^7.2.3",
+        "eslint": "^4.4.1",
+        "eslint-config-airbnb-base": "^11.3.1",
+        "eslint-plugin-import": "^2.7.0",
+        "source-map-support": "^0.4.16"
+    },
+    "engines": {
+        "node": ">=6.6.0",
+        "yarn": ">=0.27.5"
+    },
+    "ava": {
+        "require": "babel-register",
+		"babel": "inherit",
+        "files": [
+            "tests/*.js"
+        ]
+    }
+}
