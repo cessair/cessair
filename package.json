@@ -26,7 +26,7 @@
     },
     "scripts": {
         "prepublishOnly": "node cessair error 'Root package is not for publishing.'",
-        "preinspect": "git diff-index --quiet HEAD -- || yarn build --silent",
+        "preinspect": "git diff-index --quiet HEAD -- || node cessair yarnpm build -- --silent",
         "inspect": "node --require ./packages/cessair --inspect",
         "inspect:direct": "node --require ./packages/cessair --inspect",
         "prebuild": "lerna clean --yes --loglevel silent && lerna exec -- cp ../../cessair.js .",
@@ -61,8 +61,7 @@
         "yargs": "^8.0.2"
     },
     "engines": {
-        "node": ">=6.6.0",
-        "yarn": ">=0.27.5"
+        "node": ">=6.6.0"
     },
     "ava": {
         "require": "babel-register",

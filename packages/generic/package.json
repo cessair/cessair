@@ -27,7 +27,7 @@
     "repository": "https://github.com/cessair/cessair/tree/master/packages/generic",
     "scripts": {
         "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
-        "postinstall": "yarn build",
+        "postinstall": "node cessair yarnpm build",
         "prebuild": "node cessair babelrc",
         "build": "babel sources --out-dir libraries --source-maps inline --quiet",
         "test": "eslint sources && ava"
@@ -46,8 +46,7 @@
         "source-map-support": "^0.4.16"
     },
     "engines": {
-        "node": ">=6.6.0",
-        "yarn": ">=0.27.5"
+        "node": ">=6.6.0"
     },
     "ava": {
         "require": "babel-register",

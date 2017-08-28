@@ -4,7 +4,8 @@
  **/
 
 // Node.js built-in API.
-const { exit, stderr, stdout, version } = require('process');
+const { delimiter, resolve } = require('path');
+const { exit, stderr, stdout, version, env: { PATH: pathes } } = require('process');
 
 // Third-party modules.
 const Bluebird = require('bluebird');
@@ -15,6 +16,24 @@ const semver = require('semver');
 const yargs = require('yargs');
 
 const usageTemplate = 'Usage:\n  node $0';
+
+const yarnpm = Bluebird.coroutine(function* yarnpm() {
+    const candidates = pathes.split(delimiter).map(directory => resolve(directory, 'yarn'));
+
+    for(const candidate of candidates) {
+        if(yield existsAsync(candidate)) {
+            return 'yarn';
+        }
+    }
+
+    return 'npm';
+})();
+
+function execute(target, options = {}) {
+    const [ command, ...args ] = target.split(' ');
+
+    return execa(command, args, options);
+}
 
 function output(message) {
     if(message instanceof Object) {
@@ -55,6 +74,7 @@ yargs // eslint-disable-line
         command: 'error [message]',
         describe: 'print error message and terminate the Node.js process with a non-zero exit code',
         builder: generateBuilder('error [message]'),
+
         handler({ message }) {
             if(message) {
                 ora({ text: message }).start().fail();
@@ -69,6 +89,7 @@ yargs // eslint-disable-line
         command: 'create <packages...>',
         describe: 'create new package(s) with package templates',
         builder: generateBuilder('create <packages...>'),
+
         handler: Bluebird.coroutine(function* handler({ packages }) {
             packages = packages.map(name => String(name).toLowerCase()); // eslint-disable-line
 
@@ -80,16 +101,23 @@ yargs // eslint-disable-line
             const result = [];
 
             const [
-                cessairJSON, buildingVersion, commonVersion, coreVersion, sourceTemplate, testTemplate, packageTemplate
-            ] = yield Bluebird.all([
-                readAsync('./packages/cessair/package.json', 'json'),
-                readAsync('./packages/building/package.json', 'json').then(({ version }) => version),
-                readAsync('./packages/common/package.json', 'json').then(({ version }) => version),
-                readAsync('./packages/core/package.json', 'json').then(({ version }) => version),
-                readAsync('./templates/sources/index.js'),
-                readAsync('./templates/tests/index.js'),
-                readAsync('./templates/package.json', 'json')
-            ]);
+                cessairJSON, sourceTemplate, testTemplate, packageTemplate
+            ] = yield* [
+                './packages/cessair/package.json',
+                './templates/sources/index.js',
+                './templates/tests/index.js',
+                './templates/package.json'
+            ].map(path => (
+                /\.json$/.test(path) ? [ path, 'json' ] : [ path ]
+            )).map(args => readAsync(...args));
+
+            const [
+                buildingVersion, commonVersion, coreVersion
+            ] = yield* [
+                './packages/building/package.json',
+                './packages/common/package.json',
+                './packages/core/package.json'
+            ].map(path => readAsync(path, 'json').then(({ version }) => version));
 
             for(const name of packages) {
                 spinner = ora(`Begin to create ${name} package.`).start();
@@ -109,10 +137,12 @@ yargs // eslint-disable-line
                 const packageJSON = Object.assign({}, packageTemplate, {
                     name: `@cessair/${name}`,
                     repository: packageTemplate.repository + name,
+
                     author: {
-                        name: (yield execa('git', [ 'config', '--global', 'user.name' ])).stdout.trim(),
-                        email: (yield execa('git', [ 'config', '--global', 'user.email' ])).stdout.trim()
+                        name: (yield execute('git config --global user.name')).stdout.trim(),
+                        email: (yield execute('git config --global user.email')).stdout.trim()
                     },
+
                     dependencies: Object.assign({}, packageTemplate.dependencies, {
                         '@cessair/building': `^${buildingVersion}`,
                         '@cessair/common': `^${commonVersion}`,
@@ -151,7 +181,7 @@ yargs // eslint-disable-line
             if(result.every(element => element)) {
                 spinner = ora('Please wait to build.').start();
 
-                yield execa('yarn', [ 'build' ]);
+                yield execute(`${yield yarnpm} build`);
 
                 spinner.succeed('Succeed to build.');
             }
@@ -164,35 +194,42 @@ yargs // eslint-disable-line
     .command({
         command: 'build <packages...>',
         describe: 'build specified package(s)',
-        builder: generateBuilder('build <packages...>\n\n  if you want to build totally, execute `yarn build`.'),
+
+        builder: generateBuilder(
+            'build <packages...>\n\n  if you want to build totally, execute `node cessair yarnpm build`.'
+        ),
+
         handler: Bluebird.coroutine(function* handler({ packages }) {
             const spinner = ora().start('Begin to build partially');
 
             function catcher(error) {
-                spinner.fail(error);
-                output(error.stack);
-                exit(1);
+                spinner.fail(error.message);
+                exit(error.code);
             }
 
-            yield Bluebird.all(packages.map(name => (
+            yield* packages.map(name => (
                 `lerna exec --scope ${
-                    name === 'cessair' ? name : `cessair-${name}`
-                } --loglevel silent -- yarn run build`
-            ).split(' ')).map(([ command, ...args ]) => execa(command, args).then(({ stderr }) => {
-                if(stderr) {
-                    output({ stderr });
-                }
-            }).catch(catcher)));
+                    name === 'cessair' ? name : `@cessair/${name}`
+                } -- node cessair yarnpm build`
+            )).map(target => execute(target).catch(catcher));
 
-            yield execa('lerna', [ 'bootstrap', '--loglevel', 'silent' ]).then(({ stderr }) => {
-                if(stderr) {
-                    output({ stderr });
-                }
-            }).catch(catcher);
+            yield execute('lerna bootstrap').catch(catcher);
 
             spinner.succeed('Succeed to build!');
-
             exit(0);
+        })
+    })
+
+    // Define yarnpm command
+    .command({
+        command: 'yarnpm [commands...]',
+        describe: 'execute provided commands to yarn or npm',
+        builder: generateBuilder('yarnpm [commands...]'),
+
+        handler: Bluebird.coroutine(function* handler({ commands }) {
+            yield execute(`${yield yarnpm} ${commands.join(' ')}`, { stdio: 'inherit' }).catch(error => {
+                exit(error.code);
+            });
         })
     })
 
@@ -200,6 +237,7 @@ yargs // eslint-disable-line
     .command({
         command: 'babelrc',
         describe: 'generate `.babelrc` optimized for current runtime',
+
         builder: generateBuilder('babelrc', yargs => (
             yargs.option('p', {
                 alias: 'print',
@@ -207,6 +245,7 @@ yargs // eslint-disable-line
                 default: false
             })
         )),
+
         handler: Bluebird.coroutine(function* handler({ print }) {
             function conditional(condition, plugin) {
                 return semver.satisfies(version, condition) ? [ plugin ] : [];

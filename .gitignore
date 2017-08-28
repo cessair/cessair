@@ -1,6 +1,10 @@
 # All logs
 *.log
 
+# Lockfile of npm (Cessair prefer yarn to npm)
+npm-shrinkwrap.json
+package-lock.json
+
 # Dependency directory
 node_modules
 
