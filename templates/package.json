@@ -9,7 +9,7 @@
         "catalyst",
         "extension"
     ],
-    "homepage": "https://github.com/cessair/cessair#readme",
+    "homepage": "https://cessair.github.io/",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
     },
@@ -17,7 +17,7 @@
     "author": {
         "name": "",
         "email": "",
-        "url": "https://cessair.cichol.com/"
+        "url": "https://www.cichol.com/"
     },
     "main": "libraries",
     "directories": {
@@ -38,10 +38,10 @@
         "@cessair/core": ""
     },
     "devDependencies": {
-        "ava": "^0.21.0",
+        "ava": "^0.22.0",
         "babel-eslint": "^7.2.3",
-        "eslint": "^4.4.1",
-        "eslint-config-airbnb-base": "^11.3.1",
+        "eslint": "^4.5.0",
+        "eslint-config-airbnb-base": "^11.3.2",
         "eslint-plugin-import": "^2.7.0",
         "source-map-support": "^0.4.16"
     },

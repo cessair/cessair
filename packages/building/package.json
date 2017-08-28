@@ -9,7 +9,7 @@
         "catalyst",
         "extension"
     ],
-    "homepage": "https://github.com/cessair/cessair#readme",
+    "homepage": "https://cessair.github.io/",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
     },
@@ -17,7 +17,7 @@
     "author": {
         "name": "Yongbin Min",
         "email": "contact@cichol.com",
-        "url": "https://cessair.cichol.com/"
+        "url": "https://www.cichol.com/"
     },
     "repository": "https://github.com/cessair/cessair/tree/master/packages/building",
     "dependencies": {
