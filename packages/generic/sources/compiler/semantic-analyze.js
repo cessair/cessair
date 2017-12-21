@@ -20,11 +20,9 @@ function assertIdentifier(constraint, typeParameters, identifier) {
     }
 
     if(constraint !== Constraint.Any && constraint !== typeParameters[identifier].constraint) {
-        throw new TypeError(
-            `Constraint of type parameter ${identifier} is not ${
-                constraint === Constraint.Primitive ? 'primitive' : 'complex'
-            }`
-        );
+        throw new TypeError(`Constraint of type parameter ${identifier} is not ${
+            constraint === Constraint.Primitive ? 'primitive' : 'complex'
+        }`);
     }
 }
 
@@ -43,15 +41,11 @@ function assertReference(constraint, reference) {
     ));
 
     if(constraint === Constraint.Primitive && !primitiveness) {
-        throw new TypeError(
-            'Primitive constraint able to extend undefined, null, Boolean, Symbol, Number, String'
-        );
+        throw new TypeError('Primitive constraint able to extend undefined, null, Boolean, Symbol, Number, String');
     }
 
     if(constraint === Constraint.Complex && primitiveness) {
-        throw new TypeError(
-            'Complex constraint unable to extend undefined, null, Boolean, Symbol, Number, String'
-        );
+        throw new TypeError('Complex constraint unable to extend undefined, null, Boolean, Symbol, Number, String');
     }
 }
 
@@ -115,7 +109,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
                 return State.End;
             }
 
-            switch(nextType.representing) {
+            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.ConstraintPrimitive: {
                 typeParameter.constraint = Constraint.Primitive;
 
@@ -150,7 +144,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
 
             Object.assign(typeParameter, { identifier });
 
-            switch(nextType.representing) {
+            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.Extends: {
                 return State.Extending;
             }
@@ -188,7 +182,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
         [State.ExtendingIdentifier]({ position, typeParameter, current, next, currentType, nextType }) {
             const { constraint, extending } = typeParameter;
 
-            switch(currentType.representing) {
+            switch(currentType[Object.getOwnPropertySymbols(currentType)[0]]) {
             case Token.Identifier: {
                 const identifier = identifiers[position];
 
@@ -216,7 +210,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             }
             }
 
-            switch(nextType.representing) {
+            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.ConjunctionNext: {
                 return State.Start;
             }
@@ -256,7 +250,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
 
             const { constraint } = typeParameter;
 
-            switch(nextType.representing) {
+            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.Identifier: {
                 const identifier = identifiers[position + 1];
 

@@ -1,6 +1,5 @@
-import 'source-map-support/register';
 import test from 'ava';
-import Type from '../libraries/type';
+import Type from '../sources/typing';
 
 function testDiversely(test, coreType, ...values) {
     const types = values.map(value => Type.of(value));

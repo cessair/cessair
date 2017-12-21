@@ -1,0 +1,5 @@
+# Dependency directory
+packages/*/node_modules
+
+# Transpiled library codes
+packages/*/libraries

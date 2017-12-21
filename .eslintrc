@@ -70,6 +70,12 @@
             }
         ],
         "no-shadow": "off",
+        "object-curly-newline": [
+            "error",
+            {
+                "consistent": true
+            }
+        ],
         "spaced-comment": [
             "error",
             "always",

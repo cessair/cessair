@@ -1,15 +1,15 @@
 # All logs
 *.log
 
-# Lockfile of npm (Cessair prefer yarn to npm)
+# Other lockfiles
 npm-shrinkwrap.json
-package-lock.json
+yarn.lock
 
 # Dependency directory
 node_modules
 
-# Transpiled library codes
-libraries
+# Released contents
+releases
 
 # Babel configuration
 .babelrc
@@ -17,4 +17,3 @@ libraries
 # Dependency files for publishing
 packages/*/.babelrc
 packages/*/.npmignore
-packages/*/cessair.js

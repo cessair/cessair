@@ -1,3 +1,3 @@
-import './enlargement';
+import './extender';
 
-export Type from './type';
+export Type from './typing';

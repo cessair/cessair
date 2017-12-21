@@ -12,9 +12,7 @@ export default function lexicalAnalyze(source) {
         if(identifier.length) {
             const identifierString = String.fromCodePoint(...identifier);
 
-            identifiers[tokens.push(
-                new Token.Identifier(position - identifier.length, position)
-            ) - 1] = identifierString;
+            identifiers[tokens.push(new Token.Identifier(position - identifier.length, position)) - 1] = identifierString; // eslint-disable-line max-len
 
             identifier = [];
         }

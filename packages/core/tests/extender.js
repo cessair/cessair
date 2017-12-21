@@ -1,8 +1,7 @@
-import 'source-map-support/register';
 import test from 'ava';
-import '../libraries/enlargement';
+import '../sources/extender';
 
-const enlargement = {
+const expansion = {
     status: 'fine',
 
     add(a, b) {
@@ -44,30 +43,30 @@ const assertExtended = function assertExtended(test, extended) {
 };
 
 test('should be ensure extending property as non-enumerable', test => {
-    test.is(typeof Function.prototype.enhance, 'function');
-    test.false(Function.prototype.propertyIsEnumerable('enhance'));
-    test.is(typeof Object.prototype.enlarge, 'function');
-    test.false(Object.prototype.propertyIsEnumerable('enlarge'));
+    test.is(typeof Function.prototype.extends, 'function');
+    test.false(Function.prototype.propertyIsEnumerable('extends'));
+    test.is(typeof Object.prototype.expands, 'function');
+    test.false(Object.prototype.propertyIsEnumerable('expands'));
 });
 
-test('should be able to enhance a function as non-enumerable', test => {
+test('should be able to extends a function as non-enumerable', test => {
     class TestClass {
 
     }
 
-    TestClass.enhance(enlargement);
+    TestClass.extends(expansion);
     assertExtended(test, new TestClass());
 });
 
-test('should be able to enlarge an object as non-enumerable', test => {
+test('should be able to expands an object as non-enumerable', test => {
     const testObject = {};
 
-    testObject.enlarge(enlargement);
+    testObject.expands(expansion);
     assertExtended(test, testObject);
 });
 
 test('should be able to throw error if invalid descriptor provided as an arguments', test => {
     const testObject = {};
 
-    test.throws(() => testObject.enlarge('string'), TypeError);
+    test.throws(() => testObject.expands('string'), TypeError);
 });
