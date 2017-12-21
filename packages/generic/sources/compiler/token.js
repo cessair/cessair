@@ -20,7 +20,7 @@ export default class Token {
             }
         });
 
-        Token.enlarge({
+        Token.expands({
             get [name]() {
                 return tokenTable.get(name);
             }

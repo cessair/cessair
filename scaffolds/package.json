@@ -1,7 +1,7 @@
 {
-    "name": "@cessair/common",
-    "version": "1.1.0",
-    "description": "The common features using to implement Cessair.",
+    "name": "",
+    "version": "1.0.0",
+    "description": "",
     "keywords": [
         "cessair",
         "helper",
@@ -9,37 +9,41 @@
         "catalyst",
         "extension"
     ],
-    "homepage": "https://cessair.github.io/",
+    "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
     },
     "license": "MIT",
     "author": {
-        "name": "Yongbin Min",
-        "email": "contact@cichol.com",
-        "url": "https://www.cichol.com/"
+        "name": "",
+        "email": "",
+        "url": "https://cessair.cichol.com/"
     },
     "main": "releases",
     "directories": {
         "lib": "releases",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/common",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/",
     "scripts": {
+        "postinstall": "npm run build",
         "prepublishOnly": "cessair generate-npmignore",
+
         "build": "npm run build:babelrc && npm run build:transpile",
         "build:babelrc": "cessair generate-babelrc",
         "build:transpile": "babel sources --out-dir releases --source-maps inline --quiet",
+
         "test": "npm run test:eslint && npm run test:ava",
         "test:eslint": "eslint sources",
         "test:ava": "ava tests/*.js"
     },
     "dependencies": {
-        "@cessair/core": "^1.1.0"
+        "@cessair/common": "",
+        "@cessair/core": ""
     },
     "devDependencies": {
-        "@cessair/building": "^1.1.0",
-        "@cessair/cli": "^1.0.0"
+        "@cessair/cli": "",
+        "@cessair/building": ""
     },
     "engines": {
         "node": ">=8.9.3",
@@ -47,6 +51,6 @@
     },
     "ava": {
         "require": "babel-register",
-        "babel": "inherit"
+		"babel": "inherit"
     }
 }

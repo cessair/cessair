@@ -1,11 +1,25 @@
 const cache = new WeakMap();
 const fallback = { undefined() {}, null() {} };
+const typeCapsule = Symbol('@cessair/core::typeCapsule');
 
-function testCapability(target) {
+/**
+ * Check incapability of target.
+ *
+ * @param {*} target
+ * @returns {boolean}
+ **/
+function checkIncapability(target) {
     return target !== undefined && target !== null && typeof target !== 'function';
 }
 
-function testRelation(source, target) {
+/**
+ * Compare `source` and `target` by its relationship like prototype inheritance chain.
+ *
+ * @param {*} source
+ * @param {*} target
+ * @returns {boolean}
+ **/
+function compareByRelation(source, target) {
     // Test direct ancestor or undefined or null.
     if(source === target) {
         return true;
@@ -37,6 +51,12 @@ function testRelation(source, target) {
 }
 
 export default class Type {
+    /**
+     * Encasulate as a type from source instance.
+     *
+     * @param {*} source
+     * @returns {Type}
+     **/
     constructor(source) {
         const key = !source ? fallback[`${source}`] : source;
 
@@ -44,38 +64,75 @@ export default class Type {
             throw new ReferenceError(`Type<${source && source.name}> is already constructed`);
         }
 
-        this.representing = source;
+        this[typeCapsule] = source;
 
         // Makes an instance to unable to mutate and singletonizes an instance.
         Object.freeze(this);
         cache.set(key, this);
     }
 
+    /**
+     * Get type of instance.
+     *
+     * @param {*} instance
+     * @returns {Type}
+     **/
     static of(instance) {
         const source = instance === undefined || instance === null ? instance : instance.constructor;
 
         return Type.from(source);
     }
 
+    /**
+     * Find or create type instance from source instance.
+     *
+     * @param {*} source
+     * @returns {Type}
+     **/
     static from(source) {
         const key = !source ? fallback[`${source}`] : source;
 
         return cache.has(key) ? cache.get(key) : new Type(source);
     }
 
+    /**
+     * Test type equivalence by provided target.
+     *
+     * @example
+     * Type.of(1).is(Boolean); // true
+     * Type.of('Hello, world').is(String); // true
+     * Type.of(true).is(Function); // false
+     *
+     * @param {*} target
+     * @returns {boolean}
+     **/
     is(target) {
-        const [ test, plurality ] = [ target => testRelation(this.representing, target), Array.isArray(target) ];
+        const [ test, plurality ] = [ target => compareByRelation(this[typeCapsule], target), Array.isArray(target) ];
 
-        if(plurality ? target.every(testCapability) : testCapability(target)) {
+        if(plurality ? target.every(checkIncapability) : checkIncapability(target)) {
             throw new TypeError(`${target} does not to be a Type`);
         }
 
         return plurality ? target.some(test) : test(target);
     }
 
-    get [Symbol.toStringTag]() {
-        const { representing } = this;
+    /**
+     * Name of encapsulated type.
+     *
+     * @returns {string}
+     **/
+    get name() {
+        const target = this[typeCapsule];
 
-        return `Type<${representing && representing.name}>`;
+        return String(target && target.name);
+    }
+
+    /**
+     * Define tag for `Object.prototype.toString`
+     *
+     * @returns {string}
+     **/
+    get [Symbol.toStringTag]() {
+        return `Type<${this.name}>`;
     }
 }

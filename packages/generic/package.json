@@ -1,6 +1,6 @@
 {
     "name": "@cessair/generic",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "The interface for generic programming.",
     "keywords": [
         "cessair",
@@ -19,40 +19,36 @@
         "email": "contact@cichol.com",
         "url": "https://www.cichol.com/"
     },
-    "main": "libraries",
+    "main": "releases",
     "directories": {
-        "lib": "libraries",
+        "lib": "releases",
         "test": "tests"
     },
     "repository": "https://github.com/cessair/cessair/tree/master/packages/generic",
     "scripts": {
-        "prepublishOnly": "cp ../../.npmignore . && cp ../../cessair.js .",
-        "postinstall": "node cessair yarnpm build",
-        "prebuild": "node cessair babelrc",
-        "build": "babel sources --out-dir libraries --source-maps inline --quiet",
-        "test": "eslint sources && ava"
+        "postinstall": "npm run build",
+        "prepublishOnly": "cessair generate-npmignore",
+        "build": "npm run build:babelrc && npm run build:transpile",
+        "build:babelrc": "cessair generate-babelrc",
+        "build:transpile": "babel sources --out-dir releases --source-maps inline --quiet",
+        "test": "npm run test:eslint && npm run test:ava",
+        "test:eslint": "eslint sources",
+        "test:ava": "ava tests/*.js"
     },
     "dependencies": {
-        "@cessair/building": "^1.0.0",
-        "@cessair/common": "^1.0.1",
-        "@cessair/core": "^1.0.1"
+        "@cessair/common": "^1.1.0",
+        "@cessair/core": "^1.1.0"
     },
     "devDependencies": {
-        "ava": "^0.22.0",
-        "babel-eslint": "^7.2.3",
-        "eslint": "^4.5.0",
-        "eslint-config-airbnb-base": "^11.3.2",
-        "eslint-plugin-import": "^2.7.0",
-        "source-map-support": "^0.4.16"
+        "@cessair/building": "^1.1.0",
+        "@cessair/cli": "^1.0.0"
     },
     "engines": {
-        "node": ">=6.6.0"
+        "node": ">=8.9.3",
+        "npm": ">=5.6.0"
     },
     "ava": {
         "require": "babel-register",
-        "babel": "inherit",
-        "files": [
-            "tests/*.js"
-        ]
+        "babel": "inherit"
     }
 }

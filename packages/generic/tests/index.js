@@ -1,7 +1,6 @@
-import 'source-map-support/register';
 import test from 'ava';
 import { Type } from '@cessair/core';
-import generic from '../';
+import generic from '../sources';
 
 test('should be able to instantiate generic class with various type arguments', test => {
     @generic`T`
@@ -11,7 +10,7 @@ test('should be able to instantiate generic class with various type arguments', 
 
             let privateValue = value;
 
-            this.enlarge({
+            this.expands({
                 get value() {
                     return privateValue;
                 },

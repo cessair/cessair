@@ -1,33 +1,27 @@
+#!/usr/bin/env node
+
 /**
- * Cessair command line interface tool for package development.
- * This code have to ensure to work on Node.js v6.6.0+ without Babel.
+ * The CLI tool for Cessair package development.
+ * This code have to ensure to work on Node.js v8.9.3+ without Babel.
  **/
 
 // Node.js built-in API.
-const { delimiter, resolve } = require('path');
-const { exit, stderr, stdout, version, env: { PATH: pathes } } = require('process');
+const { exit, stderr, stdout } = require('process');
 
 // Third-party modules.
-const Bluebird = require('bluebird');
 const execa = require('execa');
-const { dirAsync, existsAsync, readAsync, writeAsync } = require('fs-jetpack');
+
+const {
+    dirAsync: makeDirectory,
+    existsAsync: exists,
+    readAsync: readFile,
+    writeAsync: writeFile
+} = require('fs-jetpack');
+
 const ora = require('ora');
-const semver = require('semver');
 const yargs = require('yargs');
 
-const usageTemplate = 'Usage:\n  node $0';
-
-const yarnpm = Bluebird.coroutine(function* yarnpm() {
-    const candidates = pathes.split(delimiter).map(directory => resolve(directory, 'yarn'));
-
-    for(const candidate of candidates) {
-        if(yield existsAsync(candidate)) {
-            return 'yarn';
-        }
-    }
-
-    return 'npm';
-})();
+const usageTemplate = 'Usage:\n  cessair';
 
 function execute(target, options = {}) {
     const [ command, ...args ] = target.split(' ');
@@ -52,14 +46,15 @@ function output(message) {
 }
 
 function generateBuilder(usageString, chain = yargs => yargs) {
-    return yargs => chain(
+    return yargs => chain( // eslint-disable-line function-paren-newline
         yargs
             .usage(`${usageTemplate} ${usageString}`)
             .help('help', 'print this message')
-    ).argv;
+    ).argv; // eslint-disable-line function-paren-newline
 }
 
-yargs // eslint-disable-line
+yargs // eslint-disable-line no-unused-expressions
+
     // Disable locale detection
     .detectLocale(false)
 
@@ -69,11 +64,11 @@ yargs // eslint-disable-line
     .alias('?', 'help')
     .wrap(null)
 
-    // Define error command
+    // Define `print-error` command
     .command({
-        command: 'error [message]',
+        command: 'print-error [message]',
         describe: 'print error message and terminate the Node.js process with a non-zero exit code',
-        builder: generateBuilder('error [message]'),
+        builder: generateBuilder('print-error [message]'),
 
         handler({ message }) {
             if(message) {
@@ -84,13 +79,13 @@ yargs // eslint-disable-line
         }
     })
 
-    // Define create command
+    // Define `create-package` command
     .command({
-        command: 'create <packages...>',
+        command: 'create-package <packages...>',
         describe: 'create new package(s) with package templates',
-        builder: generateBuilder('create <packages...>'),
+        builder: generateBuilder('create-package <packages...>'),
 
-        handler: Bluebird.coroutine(function* handler({ packages }) {
+        async handler({ packages }) {
             packages = packages.map(name => String(name).toLowerCase()); // eslint-disable-line
 
             function stringify(object) {
@@ -102,28 +97,31 @@ yargs // eslint-disable-line
 
             const [
                 cessairJSON, sourceTemplate, testTemplate, packageTemplate
-            ] = yield* [
+            ] = Promise.all([
                 './packages/cessair/package.json',
                 './templates/sources/index.js',
                 './templates/tests/index.js',
                 './templates/package.json'
             ].map(path => (
                 /\.json$/.test(path) ? [ path, 'json' ] : [ path ]
-            )).map(args => readAsync(...args));
+            )).map(args => readFile(...args)));
 
             const [
-                buildingVersion, commonVersion, coreVersion
-            ] = yield* [
+                buildingVersion, cliVersion, commonVersion, coreVersion
+            ] = Promise.all([
                 './packages/building/package.json',
+                './packages/cli/package.json',
                 './packages/common/package.json',
                 './packages/core/package.json'
-            ].map(path => readAsync(path, 'json').then(({ version }) => version));
+            ].map(path => readFile(path, 'json').then(({
+                version
+            }) => version)));
 
             for(const name of packages) {
                 spinner = ora(`Begin to create ${name} package.`).start();
 
                 const path = `./packages/${name}`;
-                const existence = Boolean(yield existsAsync(path));
+                const existence = Boolean(await exists(path));
 
                 if(existence) {
                     result.push(false);
@@ -132,23 +130,33 @@ yargs // eslint-disable-line
                     continue; // eslint-disable-line
                 }
 
-                yield dirAsync(`${path}/sources`);
+                await makeDirectory(`${path}/sources`);
 
-                const packageJSON = Object.assign({}, packageTemplate, {
+                const packageJSON = {
+                    ...packageTemplate,
+
                     name: `@cessair/${name}`,
                     repository: packageTemplate.repository + name,
 
                     author: {
-                        name: (yield execute('git config --global user.name')).stdout.trim(),
-                        email: (yield execute('git config --global user.email')).stdout.trim()
+                        name: (await execute('git config --global user.name')).stdout.trim(),
+                        email: (await execute('git config --global user.email')).stdout.trim()
                     },
 
-                    dependencies: Object.assign({}, packageTemplate.dependencies, {
-                        '@cessair/building': `^${buildingVersion}`,
+                    dependencies: {
+                        ...packageTemplate.dependencies,
+
                         '@cessair/common': `^${commonVersion}`,
                         '@cessair/core': `^${coreVersion}`
-                    })
-                });
+                    },
+
+                    devDependencies: {
+                        ...packageTemplate.devDependencies,
+
+                        '@cessair/building': `^${buildingVersion}`,
+                        '@cessair/cli': `^${cliVersion}`
+                    }
+                };
 
                 cessairJSON.dependencies[`@cessair/${name}`] = `^${packageJSON.version}`;
 
@@ -158,7 +166,7 @@ yargs // eslint-disable-line
                     return object;
                 }, {});
 
-                yield Bluebird.all([
+                await Promise.all([
                     [ `${path}/sources/index.js`, sourceTemplate ],
                     [ `${path}/tests/index.js`, testTemplate ],
 
@@ -172,7 +180,7 @@ yargs // eslint-disable-line
 
                     [ `${path}/package.json`, stringify(packageJSON) ],
                     [ './packages/cessair/package.json', stringify(cessairJSON) ]
-                ].map(args => writeAsync(...args)));
+                ].map(args => writeFile(...args)));
 
                 result.push(true);
                 spinner.succeed(`Package ${name} is initialized.`);
@@ -181,25 +189,23 @@ yargs // eslint-disable-line
             if(result.every(element => element)) {
                 spinner = ora('Please wait to build.').start();
 
-                yield execute(`${yield yarnpm} build`);
+                await execute('npm run build');
 
                 spinner.succeed('Succeed to build.');
             }
 
             exit(0);
-        })
+        }
     })
 
-    // Define build command
+    // Define `build` command
     .command({
         command: 'build <packages...>',
         describe: 'build specified package(s)',
 
-        builder: generateBuilder(
-            'build <packages...>\n\n  if you want to build totally, execute `node cessair yarnpm build`.'
-        ),
+        builder: generateBuilder('build <packages...>\n\n  if you want to build totally, execute `npm run build`.'), // eslint-disable-line max-len
 
-        handler: Bluebird.coroutine(function* handler({ packages }) {
+        async handler({ packages }) {
             const spinner = ora().start('Begin to build partially');
 
             function catcher(error) {
@@ -207,38 +213,44 @@ yargs // eslint-disable-line
                 exit(error.code);
             }
 
-            yield* packages.map(name => (
+            await Promise.all(packages.map(name => (
                 `lerna exec --scope ${
                     name === 'cessair' ? name : `@cessair/${name}`
-                } -- node cessair yarnpm build`
-            )).map(target => execute(target).catch(catcher));
+                } -- npm run build`
+            )).map(target => execute(target).catch(catcher)));
 
-            yield execute('lerna bootstrap').catch(catcher);
+            await execute('lerna bootstrap').catch(catcher);
 
             spinner.succeed('Succeed to build!');
             exit(0);
-        })
+        }
     })
 
-    // Define yarnpm command
+    // Define `generate-npmignore` command
     .command({
-        command: 'yarnpm [commands...]',
-        describe: 'execute provided commands to yarn or npm',
-        builder: generateBuilder('yarnpm [commands...]'),
+        command: 'generate-npmignore',
+        describe: 'generate `.npmignore` for publishing a package',
+        builder: generateBuilder('generate-babelrc'),
 
-        handler: Bluebird.coroutine(function* handler({ commands }) {
-            yield execute(`${yield yarnpm} ${commands.join(' ')}`, { stdio: 'inherit' }).catch(error => {
-                exit(error.code);
-            });
-        })
+        async handler() {
+            const generated = Object.entries({
+                sources: 'Original contents',
+                '!releases': 'Released contents',
+                tests: 'Unit tests'
+            }).map(([ globPattern, description ]) => `# ${description}\n${globPattern}`).join('\n\n');
+
+            await writeFile('.npmignore', `${generated}\n`);
+
+            exit(0);
+        }
     })
 
-    // Define babelrc command
+    // Define `generate-babelrc` command
     .command({
-        command: 'babelrc',
+        command: 'generate-babelrc',
         describe: 'generate `.babelrc` optimized for current runtime',
 
-        builder: generateBuilder('babelrc', yargs => (
+        builder: generateBuilder('generate-babelrc', yargs => (
             yargs.option('p', {
                 alias: 'print',
                 describe: 'print generated `.babelrc` to stdout and exit',
@@ -246,48 +258,26 @@ yargs // eslint-disable-line
             })
         )),
 
-        handler: Bluebird.coroutine(function* handler({ print }) {
-            function conditional(condition, plugin) {
-                return semver.satisfies(version, condition) ? [ plugin ] : [];
-            }
-
-            const contexts = {
-                'transform-async-generator-functions': 'async function* foo() { yield 1; await 2; }',
-                'transform-decorators-legacy': 'function foo() {}; @foo\nclass Bar { }',
-                'transform-class-properties': 'class Foo { bar = () => {} }',
-                'transform-do-expressions': 'let foo = do { if(Math.random() >= 0.5) { true } else { false } }',
-                'transform-function-bind': 'const foo = { bar() {} }; foo::bar()'
-            };
-
+        async handler({ print }) {
             const babelrc = {
+                presets: [
+                    [ 'env', { targets: { node: 'current' } } ]
+                ],
                 plugins: [
-                    // ES2015 Modules (Other features is already implemented on modern runtime)
-                    [ 'transform-es2015-modules-commonjs', 'transform-export-extensions' ],
-
-                    // Node.js v7.0.0 begin to support exponentiation operator.
-                    conditional('<7.0.0', 'transform-exponentiation-operator'),
-
-                    // Node.js v7.6.0 begin to support async function declaration.
-                    conditional('<7.6.0', 'transform-async-to-generator'),
+                    // Syntax parsing.
+                    'syntax-object-rest-spread',
 
                     // Experimental features.
-                    Object.keys(contexts).map(key => [ key, contexts[key] ]).filter(([ , context ]) => {
-                        try {
-                            eval(`(function() { ${context} })()`); // eslint-disable-line
-                        } catch(error) {
-                            return true;
-                        }
-
-                        return false;
-                    }).map(([ plugin ]) => plugin),
-
-                    // Node.js v8.3.0 begin to support object rest/spread syntax.
-                    conditional('>=8.3.0', 'syntax-object-rest-spread'),
-                    conditional('<8.3.0', 'transform-object-rest-spread'),
+                    'transform-export-extensions',
+                    'transform-async-generator-functions',
+                    'transform-do-expressions',
+                    'transform-function-bind',
+                    'transform-decorators-legacy',
+                    [ 'transform-class-properties', { spec: true } ],
 
                     // Transform code generated by Babel to code dependents on its runtime.
-                    [ [ 'transform-runtime', { polyfill: false, regenerator: false } ] ]
-                ].reduce((plugins, block) => plugins.concat(block), [])
+                    [ 'transform-runtime', { polyfill: false } ]
+                ]
             };
 
             const generated = JSON.stringify(babelrc, undefined, 4);
@@ -295,11 +285,11 @@ yargs // eslint-disable-line
             if(print) {
                 output(generated);
             } else {
-                yield writeAsync('.babelrc', `${generated}\n`);
+                await writeFile('.babelrc', `${generated}\n`);
             }
 
             exit(0);
-        })
+        }
     })
 
     // Demand one command at least.

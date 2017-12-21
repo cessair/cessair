@@ -1,25 +1,39 @@
+// Node.js built-in API.
 import { deepStrictEqual } from 'assert';
+
+// Type checking.
 import { Type } from '@cessair/core';
+
+// Compiler for generic type statements.
 import lexicalAnalyze from './compiler/lexical-analyze';
 import semanticAnalyze from './compiler/semantic-analyze';
 
 const containerCache = new WeakMap();
-const Generic = Symbol('Generic');
 
-function getHandler(deducedArguments) {
+// Passport for preventing to construct generic class in directly.
+const genericPassport = Symbol('@cessair/generic::genericPassport');
+
+function getHandler(typeInformation) {
     return {
         get(instance, key) {
             const property = instance[key];
 
             return Type.of(property).is(Function) ? new Proxy(property, {
                 apply(target, thisArgument, args) {
-                    return Reflect.apply(target, thisArgument, [ ...args, deducedArguments ]);
+                    return Reflect.apply(target, thisArgument, [ ...args, typeInformation ]);
                 }
             }) : property;
         }
     };
 }
 
+/**
+ * Make specific decorator to generalize a class.
+ *
+ * @param {string[]} source
+ * @param {...*} references
+ * @returns {function}
+ */
 export default function generic(source, ...references) {
     const concatenated = source.join('#');
     const { tokens, identifiers } = lexicalAnalyze(concatenated);
@@ -29,28 +43,40 @@ export default function generic(source, ...references) {
         const name = `${Constructor.name}<${concatenated}>`;
 
         class Container extends Constructor {
-            constructor(generic, args, deducedArguments) {
-                if(generic !== Generic) {
-                    throw new TypeError(
-                        `Generic class constructor ${name} cannot be constructed without type arguments`
-                    );
+            /**
+             * Wrap a class to use generic type definition.
+             *
+             * @param {symbol} passport
+             * @param {*[]} args
+             * @param {{ [genericType: string]: * }} typeInformation Instantiated type information.
+             * @returns {Container}
+             **/
+            constructor(passport, args, typeInformation) {
+                if(passport !== genericPassport) {
+                    throw new TypeError(`Generic class constructor ${name} cannot be constructed without type arguments`); // eslint-disable-line max-len
                 }
 
-                super(...args, deducedArguments);
+                super(...args, typeInformation);
             }
 
+            /**
+             * Instantiate generic class by type arguments.
+             *
+             * @param {...*} typeArguments
+             * @returns {Container}
+             **/
             static $(...typeArguments) {
-                const deducedArguments = deduceArguments(
+                const typeInformation = deduceArguments( // eslint-disable-line function-paren-newline
                     typeArguments.length && (
                         typeArguments.map(Type.of).every(type => type.is([ undefined, null, Function ]))
                     ) ? typeArguments : typeArguments[0] || {}
-                );
+                ); // eslint-disable-line function-paren-newline
 
                 const instanceCache = containerCache.get(this);
 
-                for(const { Instance, deducedArguments: cachedArguments } of instanceCache) {
+                for(const { Instance, typeInformation: cachedArguments } of instanceCache) {
                     try {
-                        deepStrictEqual(deducedArguments, cachedArguments);
+                        deepStrictEqual(typeInformation, cachedArguments);
                     } catch(error) {
                         continue;
                     }
@@ -60,35 +86,51 @@ export default function generic(source, ...references) {
 
                 try {
                     class Instance extends this {
+                        /**
+                         * Construct a class with generic type information.
+                         *
+                         * @param {...*} args
+                         * @returns {Instance}
+                         */
                         constructor(...args) {
-                            super(Generic, args, deducedArguments);
+                            super(genericPassport, args, typeInformation);
 
-                            return new Proxy(this, getHandler(deducedArguments));
+                            return new Proxy(this, getHandler(typeInformation));
                         }
 
+                        /**
+                         * Define tag for `Object.prototype.toString`
+                         *
+                         * @returns {string}
+                         **/
                         static [Symbol.toStringTag]() {
                             return this.name;
                         }
                     }
 
-                    Instance.enlarge({ name: `${Constructor.name}<${Object.values(deducedArguments).map(identifier => (
+                    Instance.expands({ name: `${Constructor.name}<${Object.values(typeInformation).map(identifier => (
                         `${identifier && identifier.name}`
                     )).join(', ')}>` });
 
-                    throw new Proxy(Instance, getHandler(deducedArguments));
+                    throw new Proxy(Instance, getHandler(typeInformation));
                 } catch(Instance) {
-                    instanceCache.add({ Instance, deducedArguments });
+                    instanceCache.add({ Instance, typeInformation });
 
                     return Instance;
                 }
             }
 
+            /**
+             * Define tag for `Object.prototype.toString`
+             *
+             * @returns {string}
+             **/
             static [Symbol.toStringTag]() {
                 return this.name;
             }
         }
 
-        Container.enlarge({ name });
+        Container.expands({ name });
         containerCache.set(Container, new Set());
 
         return Container;
