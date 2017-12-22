@@ -26,13 +26,10 @@
     },
     "repository": "https://github.com/cessair/cessair/tree/master/packages/",
     "scripts": {
-        "postinstall": "npm run build",
         "prepublishOnly": "cessair generate-npmignore",
-
         "build": "npm run build:babelrc && npm run build:transpile",
         "build:babelrc": "cessair generate-babelrc",
         "build:transpile": "babel sources --out-dir releases --source-maps inline --quiet",
-
         "test": "npm run test:eslint && npm run test:ava",
         "test:eslint": "eslint sources",
         "test:ava": "ava tests/*.js"
