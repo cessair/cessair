@@ -1,6 +1,6 @@
 {
     "name": "@cessair/common",
-    "version": "1.1.0",
+    "version": "1.1.6",
     "description": "The common features using to implement Cessair.",
     "keywords": [
         "cessair",
@@ -20,6 +20,7 @@
         "url": "https://www.cichol.com/"
     },
     "main": "releases",
+    "types": "common.d.ts",
     "directories": {
         "lib": "releases",
         "test": "tests"
@@ -35,14 +36,14 @@
         "test:ava": "ava tests/*.js"
     },
     "dependencies": {
-        "@cessair/core": "^1.1.0"
+        "@cessair/core": "^1.1.6"
     },
     "devDependencies": {
-        "@cessair/building": "^1.1.0",
-        "@cessair/cli": "^1.0.0"
+        "@cessair/building": "^1.2.3",
+        "@cessair/cli": "^1.0.4"
     },
     "engines": {
-        "node": ">=8.9.3",
+        "node": ">=8.9.4",
         "npm": ">=5.6.0"
     },
     "ava": {

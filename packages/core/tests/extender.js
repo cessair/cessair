@@ -1,4 +1,4 @@
-import test from 'ava';
+import test from 'ava'; // eslint-disable-line import/no-extraneous-dependencies
 import '../sources/extender';
 
 const expansion = {
@@ -13,7 +13,7 @@ const expansion = {
     },
 
     set value(value) {
-        value.count += 1; // eslint-disable-line
+        value.count += 1; // eslint-disable-line no-param-reassign
     },
 
     * range() {
@@ -35,7 +35,7 @@ const assertExtended = function assertExtended(test, extended) {
 
     const object = { count: 12 };
 
-    extended.value = object; // eslint-disable-line
+    extended.value = object; // eslint-disable-line no-param-reassign
 
     test.is(object.count, 13);
     test.deepEqual([ ...extended.range() ], [ 1, 2, 3 ]);
