@@ -1,7 +1,7 @@
 {
-    "name": "@cessair/generic",
-    "version": "1.1.6",
-    "description": "The interface for generic programming.",
+    "name": "@cessair/function",
+    "version": "1.0.0",
+    "description": "The interface for extending functions.",
     "keywords": [
         "cessair",
         "helper",
@@ -9,7 +9,7 @@
         "catalyst",
         "extension"
     ],
-    "homepage": "https://cessair.github.io/",
+    "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
     },
@@ -20,12 +20,12 @@
         "url": "https://www.cichol.com/"
     },
     "main": "releases",
-    "types": "generic.d.ts",
+    "types": "function.d.ts",
     "directories": {
         "lib": "releases",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/generic",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/function",
     "scripts": {
         "prepublishOnly": "cessair generate-npmignore",
         "build": "npm run build:babelrc && npm run build:transpile",

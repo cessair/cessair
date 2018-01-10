@@ -39,15 +39,15 @@
         "@cessair/core": ""
     },
     "devDependencies": {
-        "@cessair/cli": "",
-        "@cessair/building": ""
+        "@cessair/building": "",
+        "@cessair/cli": ""
     },
     "engines": {
-        "node": ">=8.9.3",
+        "node": ">=8.9.4",
         "npm": ">=5.6.0"
     },
     "ava": {
-        "require": "babel-register",
+        "require": "@babel/register",
 		"babel": "inherit"
     }
 }

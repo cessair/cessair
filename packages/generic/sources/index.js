@@ -30,9 +30,18 @@ function getHandler(typeInformation) {
 /**
  * Make specific decorator to generalize a class.
  *
+ * ---
+ * @example
+ * class Container { ... }
+ *
+ * const GenericContainer = generic`T : ${Number}`(Container);
+ * const NumericContaienr = GenericContainer.$(Number);
+ *
+ * return new NumericContainer(...);
+ *
  * @param {string[]} source
  * @param {...*} references
- * @returns {function}
+ * @returns {ClassDecorator}
  */
 export default function generic(source, ...references) {
     const concatenated = source.join('#');
@@ -121,7 +130,7 @@ export default function generic(source, ...references) {
             }
 
             /**
-             * Define tag for `Object.prototype.toString`
+             * Define tag for inherited property `Object.prototype.toString`.
              *
              * @returns {string}
              **/

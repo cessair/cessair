@@ -2,9 +2,7 @@ const tokenTable = new Map();
 
 export default class Token {
     constructor(name, start, end) {
-        this.name = name;
-        this.start = start;
-        this.end = end;
+        this.expands({ name, start, end });
 
         Object.freeze(this);
     }
