@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@cessair/package",
-    "version": "1.1.0",
+    "version": "1.1.4",
     "description": "A catalyst for making robust and stable core of either module or service.",
     "keywords": [
         "cessair",
@@ -35,21 +35,19 @@
         "test:eslint": "eslint packages/*/sources",
         "test:ava": "ava packages/*/tests/*.js"
     },
-    "dependencies": {
-        "cessair": "./packages/cessair"
-    },
     "devDependencies": {
-        "@cessair/building": "./packages/building",
-        "@cessair/cli": "./packages/cli",
+        "@cessair/building": "^1.2.3",
+        "@cessair/cli": "^1.0.4",
         "ava": "^0.24.0",
         "babel-eslint": "^8.0.3",
         "eslint": "^4.13.1",
         "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-babel": "^4.1.2",
         "eslint-plugin-import": "^2.8.0",
         "lerna": "^2.5.1"
     },
     "engines": {
-        "node": ">=8.9.3",
+        "node": ">=8.9.4",
         "npm": ">=5.6.0"
     },
     "ava": {

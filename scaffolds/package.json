@@ -26,13 +26,10 @@
     },
     "repository": "https://github.com/cessair/cessair/tree/master/packages/",
     "scripts": {
-        "postinstall": "npm run build",
         "prepublishOnly": "cessair generate-npmignore",
-
         "build": "npm run build:babelrc && npm run build:transpile",
         "build:babelrc": "cessair generate-babelrc",
         "build:transpile": "babel sources --out-dir releases --source-maps inline --quiet",
-
         "test": "npm run test:eslint && npm run test:ava",
         "test:eslint": "eslint sources",
         "test:ava": "ava tests/*.js"
@@ -42,15 +39,15 @@
         "@cessair/core": ""
     },
     "devDependencies": {
-        "@cessair/cli": "",
-        "@cessair/building": ""
+        "@cessair/building": "",
+        "@cessair/cli": ""
     },
     "engines": {
-        "node": ">=8.9.3",
+        "node": ">=8.9.4",
         "npm": ">=5.6.0"
     },
     "ava": {
-        "require": "babel-register",
+        "require": "@babel/register",
 		"babel": "inherit"
     }
 }

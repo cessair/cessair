@@ -1,4 +1,4 @@
-import test from 'ava';
+import test from 'ava'; // eslint-disable-line import/no-extraneous-dependencies
 import Type from '../sources/typing';
 
 function testDiversely(test, coreType, ...values) {
@@ -9,8 +9,8 @@ function testDiversely(test, coreType, ...values) {
 }
 
 const [ GeneratorFunction, AsyncFunction ] = [
-    function* generatorFunction() {}, // eslint-disable-line
-    async function asyncFunction() {} // eslint-disable-line
+    function* generatorFunction() {}, // eslint-disable-line no-empty-function
+    async function asyncFunction() {} // eslint-disable-line no-empty-function
 ].map(({ constructor }) => constructor);
 
 test('should be able to distinguish undefined and null', test => {
@@ -44,32 +44,32 @@ test('should be able to think instances of diverse object constructing expressio
     testVariously(
         Array,
         [],
-        new Array() // eslint-disable-line
+        new Array() // eslint-disable-line no-array-constructor
     );
 
     testVariously(
         Object,
         {},
-        new Object() // eslint-disable-line
+        new Object() // eslint-disable-line no-new-object
     );
 
     testVariously(
         Function,
-        function testFunction() {}, // eslint-disable-line
+        function testFunction() {}, // eslint-disable-line no-empty-function, prefer-arrow-callback
         () => {},
         class TestClass {},
-        new Function() // eslint-disable-line
+        new Function() // eslint-disable-line no-new-func
     );
 
     testVariously(
         GeneratorFunction,
-        function* generatorFunction() {}, // eslint-disable-line
+        function* generatorFunction() {}, // eslint-disable-line no-empty-function, prefer-arrow-callback
         new GeneratorFunction()
     );
 
     testVariously(
         AsyncFunction,
-        async function asyncFunction() {}, // eslint-disable-line
+        async function asyncFunction() {}, // eslint-disable-line no-empty-function, prefer-arrow-callback
         async () => {},
         new AsyncFunction()
     );
@@ -78,7 +78,7 @@ test('should be able to think instances of diverse object constructing expressio
         Boolean,
         true,
         false,
-        new Boolean() // eslint-disable-line
+        new Boolean() // eslint-disable-line no-new-wrappers
     );
 
     testVariously(
@@ -88,13 +88,13 @@ test('should be able to think instances of diverse object constructing expressio
         Infinity,
         -Infinity,
         NaN,
-        new Number() // eslint-disable-line
+        new Number() // eslint-disable-line no-new-wrappers
     );
 
     testVariously(
         String,
         '',
-        new String() // eslint-disable-line
+        new String() // eslint-disable-line no-new-wrappers
     );
 
     testVariously(
@@ -108,7 +108,7 @@ test('should be able to think instances of diverse function constructing express
     test.true([
         // Regular function.
         function testFunction() {},
-        new Function(), // eslint-disable-line
+        new Function(), // eslint-disable-line no-new-func
 
         // Array function.
         () => {},
@@ -117,11 +117,11 @@ test('should be able to think instances of diverse function constructing express
         class TestClass {},
 
         // Generator function.
-        function* generatorFunction() {}, // eslint-disable-line
+        function* generatorFunction() {}, // eslint-disable-line no-empty-function
         new GeneratorFunction(),
 
         // Async function.
-        async function asyncFunction() {}, //eslint-disable-line
+        async function asyncFunction() {}, // eslint-disable-line no-empty-function
         async () => {},
         new AsyncFunction()
     ].every(value => Type.of(value).is(Function)));

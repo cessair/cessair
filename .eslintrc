@@ -1,4 +1,7 @@
 {
+    "plugins": [
+        "babel"
+    ],
     "env": {
         "es6": true
     },
@@ -16,6 +19,10 @@
         "arrow-parens": [
             "error",
             "as-needed"
+        ],
+        "babel/object-curly-spacing": [
+            "error",
+            "always"
         ],
         "class-methods-use-this": "off",
         "comma-dangle": [

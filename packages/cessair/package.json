@@ -1,6 +1,6 @@
 {
     "name": "cessair",
-    "version": "1.1.0",
+    "version": "1.1.4",
     "description": "A catalyst for making robust and stable core of either module or service.",
     "keywords": [
         "cessair",
@@ -34,16 +34,17 @@
         "test:eslint": "eslint sources"
     },
     "dependencies": {
-        "@cessair/common": "^1.1.0",
-        "@cessair/core": "^1.1.0",
-        "@cessair/generic": "^1.1.0"
+        "@cessair/common": "^1.1.6",
+        "@cessair/core": "^1.1.6",
+        "@cessair/function": "^1.0.0",
+        "@cessair/generic": "^1.1.6"
     },
     "devDependencies": {
-        "@cessair/building": "^1.1.0",
-        "@cessair/cli": "^1.0.0"
+        "@cessair/building": "^1.2.3",
+        "@cessair/cli": "^1.0.4"
     },
     "engines": {
-        "node": ">=8.9.3",
+        "node": ">=8.9.4",
         "npm": ">=5.6.0"
     }
 }
