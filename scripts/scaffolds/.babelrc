@@ -1,0 +1,45 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "v8.11.2"
+                }
+            }
+        ]
+    ],
+    "plugins": [
+        "@babel/plugin-syntax-object-rest-spread",
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-function-bind",
+        [
+            "@babel/plugin-transform-async-to-generator",
+            {
+                "module": "bluebird",
+                "method": "coroutine"
+            }
+        ],
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": true
+            }
+        ],
+        [
+            "@babel/plugin-proposal-class-properties",
+            {
+                "loose": true
+            }
+        ],
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                "polyfill": false,
+                "regenerator": false,
+                "useBuiltIns": true
+            }
+        ]
+    ]
+}

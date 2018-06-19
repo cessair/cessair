@@ -1,15 +1,8 @@
 {
     "name": "@cessair/core",
-    "version": "1.1.6",
+    "version": "1.1.7",
     "description": "The core logic of Cessair.",
-    "keywords": [
-        "cessair",
-        "helper",
-        "utility",
-        "catalyst",
-        "extension"
-    ],
-    "homepage": "https://cessair.github.io/",
+    "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
     },
@@ -27,28 +20,46 @@
     },
     "repository": "https://github.com/cessair/cessair/tree/master/packages/core",
     "scripts": {
-        "prepublishOnly": "cessair generate-npmignore",
+        "prepublishOnly": "node ../../scripts generate-npmignore",
         "build": "npm run build:babelrc && npm run build:transpile",
-        "build:babelrc": "cessair generate-babelrc",
-        "build:transpile": "babel sources --out-dir releases --source-maps inline --quiet",
-        "test": "npm run test:eslint && npm run test:ava",
-        "test:eslint": "eslint sources",
-        "test:ava": "ava tests/*.js"
+        "build:babelrc": "node ../../scripts generate-babelrc",
+        "build:transpile": "npx babel sources --out-dir releases --source-maps inline --quiet",
+        "test": "npm run test:eslint && npm run test:jest",
+        "test:eslint": "npx eslint packages/*/sources",
+        "test:jest": "npx lerna exec -- npm test"
     },
     "dependencies": {
-        "babel-runtime": "^6.26.0",
-        "bluebird": "^3.5.1"
+        "@babel/runtime": "^7.0.0-beta.51"
     },
     "devDependencies": {
-        "@cessair/building": "^1.2.3",
-        "@cessair/cli": "^1.0.4"
+        "@babel/cli": "^7.0.0-beta.51",
+        "@babel/core": "^7.0.0-beta.51",
+        "@babel/plugin-proposal-class-properties": "^7.0.0-beta.51",
+        "@babel/plugin-proposal-decorators": "^7.0.0-beta.51",
+        "@babel/plugin-proposal-export-default-from": "^7.0.0-beta.51",
+        "@babel/plugin-proposal-export-namespace-from": "^7.0.0-beta.51",
+        "@babel/plugin-proposal-function-bind": "^7.0.0-beta.51",
+        "@babel/plugin-syntax-object-rest-spread": "^7.0.0-beta.51",
+        "@babel/plugin-transform-async-to-generator": "^7.0.0-beta.51",
+        "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
+        "@babel/preset-env": "^7.0.0-beta.51",
+        "@babel/register": "^7.0.0-beta.51",
+        "babel-eslint": "^8.2.3",
+        "babel-jest": "^23.0.1",
+        "eslint": "^4.19.1",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.12.0",
+        "jest": "^23.0.1"
     },
     "engines": {
-        "node": ">=8.9.4",
-        "npm": ">=5.6.0"
+        "node": ">=8.11.2",
+        "npm": ">=6.1.0"
     },
-    "ava": {
-        "require": "babel-register",
-        "babel": "inherit"
+    "publishConfig": {
+        "access": "public"
+    },
+    "jest": {
+        "testRegex": "/tests/.*\\.js$",
+        "verbose": true
     }
 }

@@ -1,15 +1,7 @@
 {
     "private": true,
-    "name": "@cessair/package",
-    "version": "1.1.4",
-    "description": "A catalyst for making robust and stable core of either module or service.",
-    "keywords": [
-        "cessair",
-        "helper",
-        "utility",
-        "catalyst",
-        "extension"
-    ],
+    "name": "@cessair/root",
+    "description": "The root directory for wrapping packages.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
@@ -18,40 +10,41 @@
     "author": {
         "name": "Yongbin Min",
         "email": "contact@cichol.com",
-        "url": "https://cessair.cichol.com/"
+        "url": "https://www.cichol.com/"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/cessair/cessair.git"
     },
     "scripts": {
-        "postinstall": "cessair generate-babelrc",
-        "prepublishOnly": "cessair print-error 'Root package is not for publishing.'",
+        "postinstall": "node scripts generate-babelrc",
         "build": "npm run build:clean && npm run build:bootstrap && npm run build:execute",
-        "build:clean": "lerna clean --yes --loglevel silent",
-        "build:bootstrap": "lerna bootstrap --loglevel silent",
-        "build:execute": "lerna exec -- npm run build -- --silent",
-        "test": "npm run test:eslint && npm run test:ava",
-        "test:eslint": "eslint packages/*/sources",
-        "test:ava": "ava packages/*/tests/*.js"
+        "build:clean": "npx lerna clean --yes --loglevel silent",
+        "build:bootstrap": "npx lerna bootstrap --loglevel silent",
+        "build:execute": "npx lerna exec -- npm run build -- --silent",
+        "test": "npm run test:eslint && npm run test:jest",
+        "test:eslint": "npx eslint packages/*/sources",
+        "test:jest": "npx lerna exec -- npm test"
     },
     "devDependencies": {
-        "@cessair/building": "^1.2.3",
-        "@cessair/cli": "^1.0.4",
-        "ava": "^0.24.0",
-        "babel-eslint": "^8.0.3",
-        "eslint": "^4.13.1",
+        "@cessair/scripts": "./scripts",
+        "babel-eslint": "^8.2.3",
+        "esdoc": "^1.1.0",
+        "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+        "esdoc-standard-plugin": "^1.0.0",
+        "eslint": "^4.19.1",
         "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-babel": "^4.1.2",
-        "eslint-plugin-import": "^2.8.0",
-        "lerna": "^2.5.1"
+        "eslint-plugin-import": "^2.12.0",
+        "husky": "^0.14.3",
+        "lerna": "^2.11.0"
     },
     "engines": {
-        "node": ">=8.9.4",
-        "npm": ">=5.6.0"
+        "node": ">=8.11.2",
+        "npm": ">=6.1.0"
     },
-    "ava": {
-        "require": "babel-register",
-        "babel": "inherit"
+    "husky": {
+        "hooks": {
+            "pre-commit": "echo 'CHECK COMMIT MESSAGE GUIDELINE and LOCAL TEST'"
+        }
     }
 }
