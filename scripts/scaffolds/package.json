@@ -1,23 +1,15 @@
 {
-    "name": "",
+    "name": "@cessair/template",
     "version": "1.0.0",
     "description": "",
-    "keywords": [
-        "cessair",
-        "helper",
-        "utility",
-        "catalyst",
-        "extension"
-    ],
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
     },
     "license": "MIT",
     "author": {
-        "name": "",
-        "email": "",
-        "url": "https://cessair.cichol.com/"
+        "name": "git config --global user.name",
+        "email": "git config --global user.email"
     },
     "main": "releases",
     "directories": {
@@ -29,25 +21,25 @@
         "prepublishOnly": "cessair generate-npmignore",
         "build": "npm run build:babelrc && npm run build:transpile",
         "build:babelrc": "cessair generate-babelrc",
-        "build:transpile": "babel sources --out-dir releases --source-maps inline --quiet",
-        "test": "npm run test:eslint && npm run test:ava",
-        "test:eslint": "eslint sources",
-        "test:ava": "ava tests/*.js"
+        "build:transpile": "npx babel sources --out-dir releases --source-maps inline --quiet",
+        "test": "npm run test:eslint && npm run test:jest",
+        "test:eslint": "npx eslint packages/*/sources",
+        "test:jest": "npx lerna exec -- npm test"
     },
     "dependencies": {
         "@cessair/common": "",
         "@cessair/core": ""
     },
-    "devDependencies": {
-        "@cessair/building": "",
-        "@cessair/cli": ""
-    },
+    "devDependencies": {},
     "engines": {
-        "node": ">=8.9.4",
-        "npm": ">=5.6.0"
+        "node": ">=8.11.2",
+        "npm": ">=6.1.0"
     },
-    "ava": {
-        "require": "@babel/register",
-		"babel": "inherit"
+    "publishConfig": {
+        "access": "public"
+    },
+    "jest": {
+        "testRegex": "/tests/.*\\.js$",
+        "verbose": true
     }
 }

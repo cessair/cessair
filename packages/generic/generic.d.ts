@@ -1,7 +1,6 @@
 /**
  * Make specific decorator to generalize a class.
  *
- * ---
  * @example
  * class Container { ... }
  *

@@ -11,15 +11,15 @@ Function.expands({
      * @returns {symbol}
      **/
     getOwnIdentity(target) {
-        if(target === undefined) {
+        if (target === undefined) {
             return undefinedIdentity;
         }
 
-        if(target === null) {
+        if (target === null) {
             return nullIdentity;
         }
 
-        if(!Type.of(target).is(Function)) {
+        if (!Type.of(target).is(Function)) {
             throw new TypeError(`Type of ${target} is not undefined or null or function`);
         }
 
@@ -34,7 +34,7 @@ Function.extends({
      * @returns {symbol}
      **/
     get identity() {
-        if(identitiesMap.has(this)) {
+        if (identitiesMap.has(this)) {
             return identitiesMap.get(this);
         }
 
@@ -53,7 +53,7 @@ Function.extends({
     get prototypeChain() {
         const chain = [];
 
-        for(let prototype = this; prototype !== null; prototype = Reflect.getPrototypeOf(prototype)) {
+        for (let prototype = this; prototype !== null; prototype = Reflect.getPrototypeOf(prototype)) {
             chain.push(prototype);
         }
 

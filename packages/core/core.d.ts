@@ -40,7 +40,7 @@ interface Constructor {
  **/
 type Capable = undefined | null | Constructor;
 
-export class Type {
+export class Type<T> {
     /**
      * Encasulate as a type from source instance.
      **/
@@ -49,17 +49,16 @@ export class Type {
     /**
      * Get type of instance.
      **/
-    static of(target: any): Type;
+    static of<U>(target: U): Type<U>;
 
     /**
      * Find or create type instance from source instance.
      **/
-    static from(source: Capable): Type;
+    static from<U>(source: U): Type<U>;
 
     /**
      * Test type equivalence by provided target.
      *
-     * ---
      * @example
      * // Exactly same as target constructor.
      * Type.of(1).is(Boolean); // true
@@ -78,8 +77,7 @@ export class Type {
 
     /**
      * Name of encapsulated type.
-
-     * ---
+     *
      * @example
      * Type.of(1).name === 'Type<Number>'; // true
      **/
@@ -88,7 +86,6 @@ export class Type {
     /**
      * Define tag for inherited property `Object.prototype.toString`.
      *
-     * ---
      * @example
      * Type.of(1).toString() === '[object Type<Number>]'; // true
      **/

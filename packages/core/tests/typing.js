@@ -8,13 +8,13 @@ function testDiversely(test, coreType, ...values) {
     test.truthy(types.reduce((previous, current) => previous === current && current));
 }
 
-const [ GeneratorFunction, AsyncFunction ] = [
+const [GeneratorFunction, AsyncFunction] = [
     function* generatorFunction() {}, // eslint-disable-line no-empty-function
     async function asyncFunction() {} // eslint-disable-line no-empty-function
 ].map(({ constructor }) => constructor);
 
 test('should be able to distinguish undefined and null', test => {
-    const [ undefinedType, nullType ] = [ undefined, null ].map(Type.of);
+    const [undefinedType, nullType] = [undefined, null].map(Type.of);
 
     test.true(undefinedType.is(undefined));
     test.false(undefinedType.is(null));
@@ -27,13 +27,9 @@ test('should be ensure type instance that is singleton', test => {
 });
 
 test('should be able to assume that heir type is heritor type', test => {
-    class Heritor {
+    class Heritor {}
 
-    }
-
-    class Heir extends Heritor {
-
-    }
+    class Heir extends Heritor {}
 
     test.true(Type.of(new Heir()).is(Heritor));
 });
@@ -97,32 +93,30 @@ test('should be able to think instances of diverse object constructing expressio
         new String() // eslint-disable-line no-new-wrappers
     );
 
-    testVariously(
-        RegExp,
-        / /,
-        new RegExp()
-    );
+    testVariously(RegExp, / /, new RegExp());
 });
 
 test('should be able to think instances of diverse function constructing expression are all the same', test => {
-    test.true([
-        // Regular function.
-        function testFunction() {},
-        new Function(), // eslint-disable-line no-new-func
+    test.true(
+        [
+            // Regular function.
+            function testFunction() {},
+            new Function(), // eslint-disable-line no-new-func
 
-        // Array function.
-        () => {},
+            // Array function.
+            () => {},
 
-        // Class declaration.
-        class TestClass {},
+            // Class declaration.
+            class TestClass {},
 
-        // Generator function.
-        function* generatorFunction() {}, // eslint-disable-line no-empty-function
-        new GeneratorFunction(),
+            // Generator function.
+            function* generatorFunction() {}, // eslint-disable-line no-empty-function
+            new GeneratorFunction(),
 
-        // Async function.
-        async function asyncFunction() {}, // eslint-disable-line no-empty-function
-        async () => {},
-        new AsyncFunction()
-    ].every(value => Type.of(value).is(Function)));
+            // Async function.
+            async function asyncFunction() {}, // eslint-disable-line no-empty-function
+            async () => {},
+            new AsyncFunction()
+        ].every(value => Type.of(value).is(Function))
+    );
 });

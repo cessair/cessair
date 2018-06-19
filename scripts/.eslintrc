@@ -1,0 +1,27 @@
+{
+    "extends": "../.eslintrc",
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".mjs"
+                ]
+            }
+        },
+        "import/extensions": [
+            ".js",
+            ".mjs"
+        ]
+    },
+    "rules": {
+        "import/extensions": [
+            "error",
+            "always",
+            {
+                "js": "never",
+                "mjs": "never"
+            }
+        ]
+    }
+}

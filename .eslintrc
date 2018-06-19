@@ -1,16 +1,13 @@
 {
-    "plugins": [
-        "babel"
-    ],
     "env": {
         "es6": true
     },
-    "extends": "airbnb-base",
     "parser": "babel-eslint",
     "parserOptions": {
-        "ecmaVersion": 8,
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "extends": "airbnb-base",
     "rules": {
         "array-bracket-spacing": [
             "error",
@@ -19,10 +16,6 @@
         "arrow-parens": [
             "error",
             "as-needed"
-        ],
-        "babel/object-curly-spacing": [
-            "error",
-            "always"
         ],
         "class-methods-use-this": "off",
         "comma-dangle": [
@@ -39,41 +32,56 @@
             "error",
             4
         ],
-        "keyword-spacing": [
-            "error",
-            {
-                "overrides": {
-                    "if": {
-                        "after": false
-                    },
-                    "switch": {
-                        "after": false
-                    },
-                    "for": {
-                        "after": false
-                    },
-                    "while": {
-                        "after": false
-                    },
-                    "catch": {
-                        "after": false
-                    }
-                }
-            }
-        ],
         "max-len": [
             "error",
-            120
+            {
+                "code": 120,
+                "ignoreComments": true,
+                "ignoreTrailingComments": true
+            }
         ],
         "no-await-in-loop": "off",
         "no-continue": "off",
         "no-loop-func": "off",
         "no-mixed-operators": "off",
-        "no-prototype-builtins": "off",
-        "no-restricted-syntax": [
-            "off",
+        "no-param-reassign": [
+            "error",
             {
-                "selector": "ForOfStatement"
+                "props": true,
+                "ignorePropertyModificationsFor": [
+                    "acc",
+                    "e",
+                    "context",
+                    "ctx",
+                    "req",
+                    "request",
+                    "res",
+                    "response",
+                    "$scope"
+                ]
+            }
+        ],
+        "no-prototype-builtins": "off",
+        "no-restricted-properties": [
+            "error",
+            {
+                "property": "forEach",
+                "message": "Please use for..of loops instead."
+            }
+        ],
+        "no-restricted-syntax": [
+            "error",
+            {
+                "selector": "ForInStatement",
+                "message": "for..in loops iterate over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array."
+            },
+            {
+                "selector": "LabeledStatement",
+                "message": "Labels are a form of GOTO; using them makes code confusing and hard to maintain and understand."
+            },
+            {
+                "selector": "WithStatement",
+                "message": "`with` is disallowed in strict mode because it makes code impossible to predict and optimize."
             }
         ],
         "no-shadow": "off",
@@ -87,9 +95,28 @@
             "error",
             "always",
             {
-                "exceptions": [
-                    "*"
-                ]
+                "line": {
+                    "exceptions": [
+                        "-",
+                        "+"
+                    ],
+                    "markers": [
+                        "=",
+                        "!"
+                    ]
+                },
+                "block": {
+                    "exceptions": [
+                        "-",
+                        "+",
+                        "*"
+                    ],
+                    "markers": [
+                        "=",
+                        "!"
+                    ],
+                    "balanced": true
+                }
             }
         ]
     }

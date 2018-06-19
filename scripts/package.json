@@ -1,7 +1,7 @@
 {
-    "name": "cessair",
-    "version": "1.2.0",
-    "description": "The catalyst for making a robust and stable core of either module or service.",
+    "private": true,
+    "name": "@cessair/scripts",
+    "description": "The command-line interface for Cessair package development.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
@@ -12,31 +12,12 @@
         "email": "contact@cichol.com",
         "url": "https://www.cichol.com/"
     },
-    "main": "releases",
-    "types": "index.d.ts",
-    "directories": {
-        "lib": "releases",
-        "test": "tests"
-    },
+    "main": "index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/cessair/cessair.git"
     },
-    "scripts": {
-        "prepublishOnly": "node ../../scripts generate-npmignore",
-        "build": "npm run build:babelrc && npm run build:transpile",
-        "build:babelrc": "node ../../scripts generate-babelrc",
-        "build:transpile": "npx babel sources --out-dir releases --source-maps inline --quiet",
-        "test": "npm run test:eslint",
-        "test:eslint": "npx eslint sources"
-    },
     "dependencies": {
-        "@cessair/common": "^1.1.7",
-        "@cessair/core": "^1.1.7",
-        "@cessair/function": "^1.0.1",
-        "@cessair/generic": "^1.1.7"
-    },
-    "devDependencies": {
         "@babel/cli": "^7.0.0-beta.51",
         "@babel/core": "^7.0.0-beta.51",
         "@babel/plugin-proposal-class-properties": "^7.0.0-beta.51",
@@ -49,10 +30,12 @@
         "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
         "@babel/preset-env": "^7.0.0-beta.51",
         "@babel/register": "^7.0.0-beta.51",
-        "babel-eslint": "^8.2.3",
-        "eslint": "^4.19.1",
-        "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.12.0"
+        "@babel/runtime": "^7.0.0-beta.51",
+        "bluebird": "^3.5.1",
+        "lerna": "^2.11.0",
+        "ora": "^2.1.0",
+        "source-map-support": "^0.5.6",
+        "yargs": "^11.0.0"
     },
     "engines": {
         "node": ">=8.11.2",

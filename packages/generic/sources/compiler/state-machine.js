@@ -10,7 +10,7 @@ export default class StateMachine {
     execute() {
         const { sharedStorage, completionCondition, beforeEach, afterEach } = this;
 
-        for(let state = this.initialState; !completionCondition(sharedStorage);) {
+        for (let state = this.initialState; !completionCondition(sharedStorage);) {
             beforeEach(sharedStorage);
 
             state = this[state](sharedStorage);

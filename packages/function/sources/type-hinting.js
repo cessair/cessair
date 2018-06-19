@@ -10,7 +10,6 @@ Function.expands({
     /**
      * Make type-hinted function by given type information.
      *
-     * ---
      * @example
      * const numberOnly = Function.typeHint(Number, x => x);
      *
@@ -25,17 +24,17 @@ Function.expands({
         const [ types, context ] = [ args.slice(0, -1), args.pop() ];
         const [ length, contextName ] = [ types.length, context.name || 'anonymous' ];
 
-        if(!length) {
+        if (!length) {
             throw new TypeError('Type hinting information is empty');
         }
 
-        if(!Type.of(context).is(Function)) {
+        if (!Type.of(context).is(Function)) {
             throw new TypeError(`${context} is not a function`);
         }
 
-        for(const type of types) {
-            if(
-                Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType)) ||
+        for (const type of types) {
+            if (
+                (Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType))) ||
                 Type.of(type).is(AnyType)
             ) {
                 continue;
@@ -44,30 +43,34 @@ Function.expands({
             throw new TypeError(`Type of ${type} is not undefined or null or function`);
         }
 
-        if(!Type.of(context).is(Function)) {
+        if (!Type.of(context).is(Function)) {
             throw new TypeError(`${context} is not a function`);
         }
 
         const typeHinted = function typeHinted(...args) {
-            if(args.length < length) {
+            if (args.length < length) {
                 throw new TypeError(`${contextName} requires ${length} argument${length > 1 ? 's' : ''} at least`);
             }
 
-            for(const [ index, argument ] of args.slice(0, length).map((argument, index) => [ index, argument ])) {
+            for (const [ index, argument ] of args.slice(0, length).map((argument, index) => [ index, argument ])) {
                 const type = types[index];
 
-                if(
-                    Array.isArray(type) && type.some(type => Type.of(argument).is(type)) ||
+                if (
+                    (Array.isArray(type) && type.some(type => Type.of(argument).is(type))) ||
                     Type.of(argument).is(type)
                 ) {
                     continue;
                 }
 
-                throw new TypeError(`${
-                    (index + 1) + [ 'st', 'nd', 'rd' ][index % 10] || 'th'
-                } argument have to be an instance of ${Array.isArray(type) ? (
-                    type.map(type => !type && `${type}` || type.name).join(' or ')
-                ) : !type && `${type}` || type.name}`);
+                /* eslint-disable max-len */
+
+                throw new TypeError(`${index + 1 + [ 'st', 'nd', 'rd' ][index % 10] || 'th'} argument have to be an instance of ${
+                    Array.isArray(type)
+                        ? type.map(type => (!type && `${type}`) || type.name).join(' or ')
+                        : (!type && `${type}`) || type.name
+                }`);
+
+                /* eslint-enable max-len */
             }
 
             return Reflect[new.target ? 'construct' : 'apply'](context, ...(new.target ? [ args ] : [ this, args ]));
@@ -77,11 +80,14 @@ Function.expands({
 
         typeHinted.expands({
             toString() {
-                return `function ${contextName}(${types.map((type, index) => (
-                    `$${index}: ${Array.isArray(type) ? (
-                        type.map(type => `${!type ? type : type.name}`).join(' | ')
-                    ) : `${!type ? type : type.name}`}`
-                )).join(', ')}) { [type hinted function] }`;
+                return `function ${contextName}(${types
+                    .map((type, index) =>
+                        `$${index}: ${
+                            Array.isArray(type)
+                                ? type.map(type => `${!type ? type : type.name}`).join(' | ')
+                                : `${!type ? type : type.name}`
+                        }`)
+                    .join(', ')}) { [type hinted function] }`;
             }
         });
 
@@ -95,7 +101,6 @@ Function.extends({
     /**
      * Attach type information to already declared function.
      *
-     *---
      * @example
      * const numberOnly = (x => x).typeHint(Number);
      *

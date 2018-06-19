@@ -11,7 +11,6 @@ Function.expands({
     /**
      * Make overloaded function by given type information.
      *
-     * ---
      * @example
      * const numberOrString = Function.overload(overload => {
      *     overload(Number, x => x);
@@ -27,7 +26,7 @@ Function.expands({
      * @returns {Function}
      **/
     overload(...args) {
-        const [ contextName, describer ] = [ args.length > 1 && args.shift() || 'overloaded', args.pop() ];
+        const [ contextName, describer ] = [ (args.length > 1 && args.shift()) || 'overloaded', args.pop() ];
 
         let otherwise = function overloaded() {
             throw new TypeError('Otherwise case is undefined');
@@ -45,12 +44,12 @@ Function.expands({
         function delegate(...args) {
             const [ types, context ] = [ args.slice(0, -1), args.pop() ];
 
-            if(!types.length) {
-                if(!context) {
+            if (!types.length) {
+                if (!context) {
                     throw new TypeError('Type hinting information for overloading is empty');
                 }
 
-                if(!Type.of(context).is(Function)) {
+                if (!Type.of(context).is(Function)) {
                     throw new TypeError('Otherwise case context of overloading is not a function');
                 }
 
@@ -59,9 +58,9 @@ Function.expands({
                 return;
             }
 
-            for(const type of types) {
-                if(
-                    Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType)) ||
+            for (const type of types) {
+                if (
+                    (Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType))) ||
                     Type.of(type).is(AnyType)
                 ) {
                     continue;
@@ -70,30 +69,33 @@ Function.expands({
                 throw new TypeError(`Type of ${type} is not undefined or null or function`);
             }
 
-            if(!Type.of(context).is(Function)) {
+            if (!Type.of(context).is(Function)) {
                 throw new TypeError(`${context} is not a function`);
             }
 
-            context.expands({
-                toString() {
-                    return `function ${contextName}(${types.map((type, index) => (
-                        `$${index}: ${Array.isArray(type) ? (
-                            type.map(type => `${!type ? type : type.name}`).join(' | ')
-                        ) : `${!type ? type : type.name}`}`
-                    )).join(', ')}) { [overloaded function] }`;
-                }
-            }, false);
+            context.expands(
+                {
+                    toString() {
+                        return `function ${contextName}(${types
+                            .map((type, index) =>
+                                `$${index}: ${
+                                    Array.isArray(type)
+                                        ? type.map(type => `${!type ? type : type.name}`).join(' | ')
+                                        : `${!type ? type : type.name}`
+                                }`)
+                            .join(', ')}) { [overloaded function] }`;
+                    }
+                },
+                false
+            );
 
             overloadedSet.add({ types, context });
         }
 
         function overloaded(...args) {
             try {
-                for(const { types, context } of overloadedSet) {
-                    if(
-                        types.length !== args.length ||
-                        types.some((type, index) => !Type.of(args[index]).is(type))
-                    ) {
+                for (const { types, context } of overloadedSet) {
+                    if (types.length !== args.length || types.some((type, index) => !Type.of(args[index]).is(type))) {
                         continue;
                     }
 
@@ -101,28 +103,33 @@ Function.expands({
                 }
 
                 throw otherwise;
-            } catch(context) {
+            } catch (context) {
                 return Reflect[new.target ? 'construct' : 'apply'](context, ...(new.target ? [ args ] : [ this, args ])); // eslint-disable-line max-len
             }
         }
 
         describer(delegate);
 
-        for(const context of [ otherwise, overloaded ]) {
+        for (const context of [ otherwise, overloaded ]) {
             redefineContextName(context, contextName);
         }
 
         overloaded.expands({
             toString() {
-                return [ ...overloadedSet, { otherwise } ].map(({ types, otherwise }, index) => (
-                    otherwise ? (
-                        `function ${otherwise.name || 'otherwise'}() { [overloaded function : case otherwise] }`
-                    ) : `function ${contextName}(${types.map((type, index) => (
-                        `$${index}: ${Array.isArray(type) ? (
-                            type.map(type => `${!type ? type : type.name}`).join(' | ')
-                        ) : `${!type ? type : type.name}`}`
-                    )).join(', ')}) { [overloaded function : case ${index}] }`
-                )).join('\n');
+                return [ ...overloadedSet, { otherwise } ]
+                    .map(({ types, otherwise }, index) =>
+                        (otherwise
+                            ? `function ${otherwise.name ||
+                                      'otherwise'}() { [overloaded function : case otherwise] }`
+                            : `function ${contextName}(${types
+                                .map((type, index) =>
+                                    `$${index}: ${
+                                        Array.isArray(type)
+                                            ? type.map(type => `${!type ? type : type.name}`).join(' | ')
+                                            : `${!type ? type : type.name}`
+                                    }`)
+                                .join(', ')}) { [overloaded function : case ${index}] }`))
+                    .join('\n');
             }
         });
 
@@ -136,7 +143,6 @@ Function.extends({
     /**
      * Overload already declared function.
      *
-     * ---
      * @example
      * const numberOrString = (x => x).typeHint(Number).overload(String, x => x);
      *
@@ -148,7 +154,7 @@ Function.extends({
      * @returns {Function}
      **/
     overload(...args) {
-        switch(true) {
+        switch (true) {
         case typeHintedMap.has(this): {
             const { types, context } = typeHintedMap.get(this);
 
