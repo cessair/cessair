@@ -4,22 +4,28 @@ import Token from './token';
 
 const [ State, Constraint, Undeduced ] = [ {}, {}, Symbol('Undeduced') ];
 
-for(const name of [
-    'Start', 'Identifier', 'Extending', 'ExtendingIdentifier', 'ExtendingConjuction', 'DefaultValue', 'End'
+for (const name of [
+    'Start',
+    'Identifier',
+    'Extending',
+    'ExtendingIdentifier',
+    'ExtendingConjuction',
+    'DefaultValue',
+    'End'
 ]) {
     State[name] = Symbol(name);
 }
 
-for(const name of [ 'Any', 'Primitive', 'Complex' ]) {
+for (const name of [ 'Any', 'Primitive', 'Complex' ]) {
     Constraint[name] = Symbol(name);
 }
 
 function assertIdentifier(constraint, typeParameters, identifier) {
-    if(!typeParameters[identifier]) {
+    if (!typeParameters[identifier]) {
         throw new ReferenceError(`Identifier '${identifier}' does not declared`);
     }
 
-    if(constraint !== Constraint.Any && constraint !== typeParameters[identifier].constraint) {
+    if (constraint !== Constraint.Any && constraint !== typeParameters[identifier].constraint) {
         throw new TypeError(`Constraint of type parameter ${identifier} is not ${
             constraint === Constraint.Primitive ? 'primitive' : 'complex'
         }`);
@@ -27,24 +33,21 @@ function assertIdentifier(constraint, typeParameters, identifier) {
 }
 
 function assertReference(constraint, reference) {
-    if(!Type.of(reference).is([ undefined, null, Function ])) {
+    if (!Type.of(reference).is([ undefined, null, Function ])) {
         throw new TypeError(`Reference '${reference}' is not referenceable`);
     }
 
-    const primitiveness = [
-        undefined, null, Boolean, Symbol, Number, String
-    ].some(item => (
-        item === reference || item && (
-            reference !== Function && reference !== Object &&
-            item instanceof reference || item.isPrototypeOf(reference)
-        )
-    ));
+    const primitiveness = [ undefined, null, Boolean, Symbol, Number, String ].some(item =>
+        item === reference ||
+            (item &&
+                ((reference !== Function && reference !== Object && item instanceof reference) ||
+                    item.isPrototypeOf(reference))));
 
-    if(constraint === Constraint.Primitive && !primitiveness) {
+    if (constraint === Constraint.Primitive && !primitiveness) {
         throw new TypeError('Primitive constraint able to extend undefined, null, Boolean, Symbol, Number, String');
     }
 
-    if(constraint === Constraint.Complex && primitiveness) {
+    if (constraint === Constraint.Complex && primitiveness) {
         throw new TypeError('Complex constraint unable to extend undefined, null, Boolean, Symbol, Number, String');
     }
 }
@@ -73,43 +76,46 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             let { typeParameter } = sharedStorage;
             const { position, current, currentType, nextType } = sharedStorage;
 
-            if(typeParameter && typeParameter.identifier) {
+            if (typeParameter && typeParameter.identifier) {
                 typeParameters[typeParameter.identifier] = typeParameter;
             }
 
-            typeParameter = new Proxy({
-                constraint: Constraint.Any,
-                value: Undeduced,
+            typeParameter = new Proxy(
+                {
+                    constraint: Constraint.Any,
+                    value: Undeduced,
 
-                extending: new Proxy([], {
-                    get(target, index) {
-                        return Type.of(target[index]).is(String) ? (
-                            typeParameters[target[index]].value
-                        ) : target[index];
+                    extending: new Proxy([], {
+                        get(target, index) {
+                            return Type.of(target[index]).is(String)
+                                ? typeParameters[target[index]].value
+                                : target[index];
+                        }
+                    })
+                },
+                {
+                    get(target, property) {
+                        return property === 'value' && Type.of(target.value).is(String)
+                            ? typeParameters[target.value].value
+                            : target[property];
                     }
-                })
-            }, {
-                get(target, property) {
-                    return property === 'value' && Type.of(target.value).is(String) ? (
-                        typeParameters[target.value].value
-                    ) : target[property];
                 }
-            });
+            );
 
             Object.assign(sharedStorage, { typeParameter });
 
-            if(
+            if (
                 !currentType.is([ Token.Start, Token.ConjunctionNext, Token.End ]) ||
-                currentType.is(Token.ConjunctionNext) && nextType.is(Token.End)
+                (currentType.is(Token.ConjunctionNext) && nextType.is(Token.End))
             ) {
                 throw new SyntaxError(`Unexpected token ${source.slice(current.start, current.end)}`);
             }
 
-            if(currentType.is(Token.Start) && nextType.is(Token.End)) {
+            if (currentType.is(Token.Start) && nextType.is(Token.End)) {
                 return State.End;
             }
 
-            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
+            switch (nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.ConstraintPrimitive: {
                 typeParameter.constraint = Constraint.Primitive;
 
@@ -125,26 +131,27 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
                 break;
             }
 
-            default: break;
+            default:
+                break;
             }
 
             return State.Identifier;
         },
 
         [State.Identifier]({ position, typeParameter, current, next, currentType, nextType }) {
-            if(!currentType.is(Token.Identifier)) {
+            if (!currentType.is(Token.Identifier)) {
                 throw new SyntaxError(`Unexpected token ${source.slice(current.start, current.end)}`);
             }
 
             const identifier = identifiers[position];
 
-            if(typeParameters[identifier]) {
+            if (typeParameters[identifier]) {
                 throw new ReferenceError(`Identifier '${identifier}' has already been declared`);
             }
 
             Object.assign(typeParameter, { identifier });
 
-            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
+            switch (nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.Extends: {
                 return State.Extending;
             }
@@ -165,14 +172,15 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
                 return State.End;
             }
 
-            default: break;
+            default:
+                break;
             }
 
             throw new SyntaxError(`Unexpected token ${source.slice(next.start, next.end)}`);
         },
 
         [State.Extending]({ current, currentType }) {
-            if(!currentType.is(Token.Extends)) {
+            if (!currentType.is(Token.Extends)) {
                 throw new SyntaxError(`Unexpected token ${source.slice(current.start, current.end)}`);
             }
 
@@ -182,7 +190,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
         [State.ExtendingIdentifier]({ position, typeParameter, current, next, currentType, nextType }) {
             const { constraint, extending } = typeParameter;
 
-            switch(currentType[Object.getOwnPropertySymbols(currentType)[0]]) {
+            switch (currentType[Object.getOwnPropertySymbols(currentType)[0]]) {
             case Token.Identifier: {
                 const identifier = identifiers[position];
 
@@ -193,7 +201,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             }
 
             case Token.Reference: {
-                if(!references.length) {
+                if (!references.length) {
                     throw new ReferenceError(`Unexpected token ${source.slice(current.start, current.end)}`);
                 }
 
@@ -210,7 +218,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             }
             }
 
-            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
+            switch (nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.ConjunctionNext: {
                 return State.Start;
             }
@@ -227,14 +235,15 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
                 return State.End;
             }
 
-            default: break;
+            default:
+                break;
             }
 
             throw new SyntaxError(`Unexpected token ${source.slice(next.start, next.end)}`);
         },
 
         [State.ExtendingConjuction]({ current, currentType }) {
-            if(!currentType.is(Token.ConjunctionOr)) {
+            if (!currentType.is(Token.ConjunctionOr)) {
                 throw new SyntaxError(`Unexpected token ${source.slice(current.start, current.end)}`);
             }
 
@@ -244,13 +253,13 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
         [State.DefaultValue](sharedStorage) {
             const { position, typeParameter, current, next, currentType, nextType } = sharedStorage;
 
-            if(!currentType.is(Token.Substitution)) {
+            if (!currentType.is(Token.Substitution)) {
                 throw new SyntaxError(`Unexpected token ${source.slice(current.start, current.end)}`);
             }
 
             const { constraint } = typeParameter;
 
-            switch(nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
+            switch (nextType[Object.getOwnPropertySymbols(nextType)[0]]) {
             case Token.Identifier: {
                 const identifier = identifiers[position + 1];
 
@@ -261,7 +270,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             }
 
             case Token.Reference: {
-                if(!references.length) {
+                if (!references.length) {
                     throw new ReferenceError(`Unexpected token ${source.slice(current.start, current.end)}`);
                 }
 
@@ -284,7 +293,7 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
         },
 
         [State.End]({ typeParameter }) {
-            if(typeParameter && typeParameter.identifier) {
+            if (typeParameter && typeParameter.identifier) {
                 typeParameters[typeParameter.identifier] = typeParameter;
             }
         }
@@ -293,42 +302,42 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
     return function deduceArguments(typeArguments) {
         let candidates = {};
 
-        if(Array.isArray(typeArguments)) {
+        if (Array.isArray(typeArguments)) {
             const identifiers = Object.keys(typeParameters);
 
-            for(const [ index, argument ] of Object.entries(typeArguments)) {
+            for (const [ index, argument ] of Object.entries(typeArguments)) {
                 candidates[identifiers[index]] = argument;
             }
         } else {
             candidates = typeArguments;
         }
 
-        for(const [ identifier, candidate ] of Object.entries(candidates)) {
+        for (const [ identifier, candidate ] of Object.entries(candidates)) {
             const parameter = typeParameters[identifier];
             const { constraint, extending } = parameter;
 
             assertIdentifier(constraint, typeParameters, identifier);
             assertReference(constraint, candidate);
 
-            if(extending.length && !Type.from(candidate).is(extending)) {
-                throw new TypeError(`Type parameter '${identifier}' have to be ${
-                    extending.map(parameter => `${parameter && parameter.name}`).join(' or ')
-                }`);
+            if (extending.length && !Type.from(candidate).is(extending)) {
+                throw new TypeError(`Type parameter '${identifier}' have to be ${extending
+                    .map(parameter => `${parameter && parameter.name}`)
+                    .join(' or ')}`);
             }
 
             parameter.value = candidate;
         }
 
         const deducedArguments = function validateArguments(...pairs) {
-            for(const [ argument, type ] of pairs) {
-                if(!Type.of(argument).is(type)) {
+            for (const [ argument, type ] of pairs) {
+                if (!Type.of(argument).is(type)) {
                     throw new TypeError(`${argument} is not ${type && type.name}`);
                 }
             }
         };
 
-        for(const [ identifier, { value } ] of Object.entries(typeParameters)) {
-            if(value === Undeduced) {
+        for (const [ identifier, { value } ] of Object.entries(typeParameters)) {
+            if (value === Undeduced) {
                 throw new TypeError(`Type parameter '${identifier}' is not deduced`);
             }
 

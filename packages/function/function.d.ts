@@ -18,7 +18,6 @@ declare global {
         /**
          * Attach type information to already declared function.
          *
-         * ---
          * @example
          * const numberOnly = (x => x).typeHint(Number);
          *
@@ -32,7 +31,6 @@ declare global {
         /**
          * Overload already declared function.
          *
-         * ---
          * @example
          * const numberOrString = (x => x).typeHint(Number).overload(String, x => x);
          *
@@ -55,7 +53,6 @@ declare global {
         /**
          * Make type-hinted function by given type information.
          *
-         * ---
          * @example
          * const numberOnly = Function.typeHint(Number, x => x);
          *
@@ -70,7 +67,6 @@ declare global {
         /**
          * Make overloaded function by given type information.
          *
-         * ---
          * @example
          * const numberOrString = Function.overload(overload => {
          *     overload(Number, x => x);
@@ -83,6 +79,8 @@ declare global {
          *
          * @param describer The callback to describe function overloading.
          **/
-        overload(describer: (overload: (...types: ...(Function | Function[]), target: Function) => void) => void): Function;
+        overload(
+            describer: (overload: (...types: (Function | Function[])[], target: Function) => void) => void
+        ): Function;
     }
 }

@@ -8,15 +8,18 @@ export default class Token {
     }
 
     static register(name) {
-        if(tokenTable.has(name)) {
+        if (tokenTable.has(name)) {
             return tokenTable.get(name);
         }
 
-        tokenTable.set(name, class extends Token {
-            constructor(start, end) {
-                super(name, start, end);
+        tokenTable.set(
+            name,
+            class extends Token {
+                constructor(start, end) {
+                    super(name, start, end);
+                }
             }
-        });
+        );
 
         Token.expands({
             get [name]() {
@@ -28,9 +31,17 @@ export default class Token {
     }
 }
 
-for(const name of [
-    'Start', 'End', 'ConstraintPrimitive', 'ConstraintComplex', 'Extends', 'Substitution', 'Reference',
-    'ConjunctionNext', 'ConjunctionOr', 'Identifier'
+for (const name of [
+    'Start',
+    'End',
+    'ConstraintPrimitive',
+    'ConstraintComplex',
+    'Extends',
+    'Substitution',
+    'Reference',
+    'ConjunctionNext',
+    'ConjunctionOr',
+    'Identifier'
 ]) {
     Token.register(name);
 }

@@ -21,28 +21,28 @@ function checkIncapability(target) {
  **/
 function compareByRelation(source, target) {
     // Test direct ancestor or undefined or null.
-    if(source === target) {
+    if (source === target) {
         return true;
     }
 
     // Test target is neither undefined nor null.
-    if(!target) {
+    if (!target) {
         return false;
     }
 
     // If this statement is true, target is Object.
     // Because, every instance of JavaScript is an object.
-    if(target !== Function && source instanceof target) {
+    if (target !== Function && source instanceof target) {
         return true;
     }
 
     // Test inheritance hierarchy from prototype chain.
-    if(target.isPrototypeOf(source)) {
+    if (target.isPrototypeOf(source)) {
         return true;
     }
 
     // Test source is neither undefined nor null.
-    if(!source) {
+    if (!source) {
         return false;
     }
 
@@ -60,7 +60,7 @@ export default class Type {
     constructor(source) {
         const key = !source ? fallback[`${source}`] : source;
 
-        if(cache.has(key)) {
+        if (cache.has(key)) {
             throw new ReferenceError(`Type<${source && source.name}> is already constructed`);
         }
 
@@ -109,7 +109,7 @@ export default class Type {
     is(target) {
         const [ test, plurality ] = [ target => compareByRelation(this[typeCapsule], target), Array.isArray(target) ];
 
-        if(plurality ? target.every(checkIncapability) : checkIncapability(target)) {
+        if (plurality ? target.every(checkIncapability) : checkIncapability(target)) {
             throw new TypeError(`${target} does not to be a Type`);
         }
 

@@ -18,11 +18,13 @@ function getHandler(typeInformation) {
         get(instance, key) {
             const property = instance[key];
 
-            return Type.of(property).is(Function) ? new Proxy(property, {
-                apply(target, thisArgument, args) {
-                    return Reflect.apply(target, thisArgument, [ ...args, typeInformation ]);
-                }
-            }) : property;
+            return Type.of(property).is(Function)
+                ? new Proxy(property, {
+                    apply(target, thisArgument, args) {
+                        return Reflect.apply(target, thisArgument, [ ...args, typeInformation ]);
+                    }
+                })
+                : property;
         }
     };
 }
@@ -30,7 +32,6 @@ function getHandler(typeInformation) {
 /**
  * Make specific decorator to generalize a class.
  *
- * ---
  * @example
  * class Container { ... }
  *
@@ -61,7 +62,7 @@ export default function generic(source, ...references) {
              * @returns {Container}
              **/
             constructor(passport, args, typeInformation) {
-                if(passport !== genericPassport) {
+                if (passport !== genericPassport) {
                     throw new TypeError(`Generic class constructor ${name} cannot be constructed without type arguments`); // eslint-disable-line max-len
                 }
 
@@ -75,18 +76,17 @@ export default function generic(source, ...references) {
              * @returns {Container}
              **/
             static $(...typeArguments) {
-                const typeInformation = deduceArguments( // eslint-disable-line function-paren-newline
-                    typeArguments.length && (
-                        typeArguments.map(Type.of).every(type => type.is([ undefined, null, Function ]))
-                    ) ? typeArguments : typeArguments[0] || {}
-                ); // eslint-disable-line function-paren-newline
+                const typeInformation = deduceArguments(typeArguments.length &&
+                    typeArguments.map(Type.of).every(type => type.is([ undefined, null, Function ]))
+                    ? typeArguments
+                    : typeArguments[0] || {});
 
                 const instanceCache = containerCache.get(this);
 
-                for(const { Instance, typeInformation: cachedArguments } of instanceCache) {
+                for (const { Instance, typeInformation: cachedArguments } of instanceCache) {
                     try {
                         deepStrictEqual(typeInformation, cachedArguments);
-                    } catch(error) {
+                    } catch (error) {
                         continue;
                     }
 
@@ -117,12 +117,14 @@ export default function generic(source, ...references) {
                         }
                     }
 
-                    Instance.expands({ name: `${Constructor.name}<${Object.values(typeInformation).map(identifier => (
-                        `${identifier && identifier.name}`
-                    )).join(', ')}>` });
+                    Instance.expands({
+                        name: `${Constructor.name}<${Object.values(typeInformation)
+                            .map(identifier => `${identifier && identifier.name}`)
+                            .join(', ')}>`
+                    });
 
                     throw new Proxy(Instance, getHandler(typeInformation));
-                } catch(Instance) {
+                } catch (Instance) {
                     instanceCache.add({ Instance, typeInformation });
 
                     return Instance;

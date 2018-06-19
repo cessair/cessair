@@ -1,4 +1,3 @@
-import test from 'ava';
 import { Type } from '@cessair/core';
 import generic from '../sources';
 
