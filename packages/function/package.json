@@ -1,6 +1,6 @@
 {
     "name": "@cessair/function",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "The interface for extending functions.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
