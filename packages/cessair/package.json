@@ -1,6 +1,6 @@
 {
     "name": "cessair",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "The catalyst for making a robust and stable core of either module or service.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
@@ -33,7 +33,7 @@
     "dependencies": {
         "@cessair/common": "^1.1.7",
         "@cessair/core": "^1.1.7",
-        "@cessair/function": "^1.0.1",
+        "@cessair/function": "^1.0.2",
         "@cessair/generic": "^1.1.7"
     },
     "devDependencies": {
