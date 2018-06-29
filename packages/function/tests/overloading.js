@@ -1,24 +1,23 @@
-import test from 'ava';
 import '../sources/overloading';
 
-test('should be able to overload functions', test => {
+test('should be able to overload functions', () => {
     const convert = Function.overload(overload => {
         overload(Number, number => String(number));
         overload(String, string => Number(string));
         overload(() => NaN);
     });
 
-    test.is(convert('123'), 123);
-    test.is(convert(123), '123');
-    test.true(Number.isNaN(convert(undefined)));
+    expect(convert('123')).toBe(123);
+    expect(convert(123)).toBe('123');
+    expect(Number.isNaN(convert(undefined))).toBe(true);
 
     const add = Function.overload(overload => {
         overload(Number, String, (alfa, bravo) => alfa + Number(bravo));
         overload(String, Number, (alfa, bravo) => Number(alfa) + bravo);
     });
 
-    test.is(add(123, '456'), 579);
-    test.is(add('123', 456), 579);
+    expect(add(123, '456')).toBe(579);
+    expect(add('123', 456)).toBe(579);
 
     const getSum = Function.overload(overload => {
         overload(Number, number => number);
@@ -27,28 +26,28 @@ test('should be able to overload functions', test => {
         overload(() => NaN);
     });
 
-    test.is(getSum(123), 123);
-    test.is(getSum(123, 456), 579);
-    test.is(getSum(123, 456, 789), 1368);
-    test.true(Number.isNaN(getSum('')));
+    expect(getSum(123)).toBe(123);
+    expect(getSum(123, 456)).toBe(579);
+    expect(getSum(123, 456, 789)).toBe(1368);
+    expect(Number.isNaN(getSum(''))).toBe(true);
 
     const typelessAdd = Function.overload(overload => {
         overload([ Number, String ], [ Number, String ], (alfa, bravo) => Number(alfa) + Number(bravo));
     });
 
-    test.is(typelessAdd(123, '456'), 579);
-    test.is(typelessAdd('123', 456), 579);
+    expect(typelessAdd(123, '456')).toBe(579);
+    expect(typelessAdd('123', 456)).toBe(579);
 });
 
-test('should not be able to overload functions if invalid conditition provided', test => {
+test('should not be able to overload functions if invalid conditition provided', () => {
     const invalidOtherwiseConvert = Function.overload(overload => {
         overload(Number, number => String(number));
-        test.throws(() => overload(123456789), TypeError);
+        expect(() => overload(123456789)).toThrow(TypeError);
     });
 
-    test.throws(() => invalidOtherwiseConvert('123'), TypeError);
+    expect(() => invalidOtherwiseConvert('123')).toThrow(TypeError);
 
     const undefinedOtherwiseConvert = Function.overload(() => {});
 
-    test.throws(() => undefinedOtherwiseConvert('456'), TypeError);
+    expect(() => undefinedOtherwiseConvert('456')).toThrow(TypeError);
 });

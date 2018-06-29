@@ -23,8 +23,8 @@
         "build:babelrc": "cessair generate-babelrc",
         "build:transpile": "npx babel sources --out-dir releases --source-maps inline --quiet",
         "test": "npm run test:eslint && npm run test:jest",
-        "test:eslint": "npx eslint packages/*/sources",
-        "test:jest": "npx lerna exec -- npm test"
+        "test:eslint": "npx eslint sources",
+        "test:jest": "npx jest"
     },
     "dependencies": {
         "@cessair/common": "",
@@ -32,7 +32,7 @@
     },
     "devDependencies": {},
     "engines": {
-        "node": ">=8.11.2",
+        "node": ">=8.11.3",
         "npm": ">=6.1.0"
     },
     "publishConfig": {

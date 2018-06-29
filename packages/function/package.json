@@ -1,6 +1,6 @@
 {
     "name": "@cessair/function",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "The interface for extending functions.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
@@ -25,13 +25,13 @@
         "build:babelrc": "node ../../scripts generate-babelrc",
         "build:transpile": "npx babel sources --out-dir releases --source-maps inline --quiet",
         "test": "npm run test:eslint && npm run test:jest",
-        "test:eslint": "npx eslint packages/*/sources",
-        "test:jest": "npx lerna exec -- npm test"
+        "test:eslint": "npx eslint sources",
+        "test:jest": "npx jest"
     },
     "dependencies": {
         "@babel/runtime": "^7.0.0-beta.51",
-        "@cessair/common": "^1.1.7",
-        "@cessair/core": "^1.1.7"
+        "@cessair/common": "^1.1.8",
+        "@cessair/core": "^1.1.8"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0-beta.51",
@@ -46,15 +46,16 @@
         "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
         "@babel/preset-env": "^7.0.0-beta.51",
         "@babel/register": "^7.0.0-beta.51",
-        "babel-eslint": "^8.2.3",
-        "babel-jest": "^23.0.1",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-eslint": "^8.2.5",
+        "babel-jest": "^23.2.0",
         "eslint": "^4.19.1",
         "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.12.0",
-        "jest": "^23.0.1"
+        "eslint-plugin-import": "^2.13.0",
+        "jest": "^23.2.0"
     },
     "engines": {
-        "node": ">=8.11.2",
+        "node": ">=8.11.3",
         "npm": ">=6.1.0"
     },
     "publishConfig": {
