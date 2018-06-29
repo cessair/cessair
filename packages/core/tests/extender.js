@@ -1,4 +1,3 @@
-import test from 'ava'; // eslint-disable-line import/no-extraneous-dependencies
 import '../sources/extender';
 
 const expansion = {
@@ -25,48 +24,46 @@ const expansion = {
     }
 };
 
-const assertExtended = function assertExtended(test, extended) {
-    test.false(extended.propertyIsEnumerable('status'));
-    test.false(extended.propertyIsEnumerable('add'));
-    test.false(extended.propertyIsEnumerable('value'));
-    test.is(extended.status, 'fine');
-    test.is(extended.add(12, 34), 46);
-    test.is(extended.value, 'test');
+const assertExtended = function assertExtended(extended) {
+    expect(extended.propertyIsEnumerable('status')).toBe(false);
+    expect(extended.propertyIsEnumerable('add')).toBe(false);
+    expect(extended.propertyIsEnumerable('value')).toBe(false);
+    expect(extended.status).toBe('fine');
+    expect(extended.add(12, 34)).toBe(46);
+    expect(extended.value).toBe('test');
 
     const object = { count: 12 };
 
     extended.value = object; // eslint-disable-line no-param-reassign
 
-    test.is(object.count, 13);
-    test.deepEqual([ ...extended.range() ], [ 1, 2, 3 ]);
-    test.deepEqual([ ...extended ], [ 4, 5, 6 ]);
+    expect(object.count).toBe(13);
+    expect([ ...extended.range() ]).toEqual([ 1, 2, 3 ]);
+    expect([ ...extended ]).toEqual([ 4, 5, 6 ]);
 };
 
-test('should be ensure extending property as non-enumerable', test => {
-    test.is(typeof Function.prototype.extends, 'function');
-    test.false(Function.prototype.propertyIsEnumerable('extends'));
-    test.is(typeof Object.prototype.expands, 'function');
-    test.false(Object.prototype.propertyIsEnumerable('expands'));
+test('should be ensure extending property as non-enumerable', () => {
+    expect(typeof Function.prototype.extends).toBe('function');
+    expect(Function.prototype.propertyIsEnumerable('extends')).toBe(false);
+    expect(typeof Object.prototype.expands).toBe('function');
+    expect(Object.prototype.propertyIsEnumerable('expands')).toBe(false);
 });
 
-test('should be able to extends a function as non-enumerable', test => {
-    class TestClass {
-
-    }
+test('should be able to extends a function as non-enumerable', () => {
+    class TestClass {}
 
     TestClass.extends(expansion);
-    assertExtended(test, new TestClass());
+    assertExtended(new TestClass());
 });
 
-test('should be able to expands an object as non-enumerable', test => {
+test('should be able to expands an object as non-enumerable', () => {
     const testObject = {};
 
     testObject.expands(expansion);
-    assertExtended(test, testObject);
+    assertExtended(testObject);
 });
 
-test('should be able to throw error if invalid descriptor provided as an arguments', test => {
+test('should be able to throw error if invalid descriptor provided as an arguments', () => {
     const testObject = {};
 
-    test.throws(() => testObject.expands('string'), TypeError);
+    expect(() => testObject.expands('string')).toThrow(TypeError);
 });

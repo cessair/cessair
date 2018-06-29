@@ -1,4 +1,4 @@
-/// <reference types="@cessair/core" />
-/// <reference types="@cessair/common" />
-/// <reference types="@cessair/generic" />
-/// <reference types="@cessair/function" />
+export * from '@cessair/core';
+import '@cessair/common';
+export * from '@cessair/generic';
+import '@cessair/function';

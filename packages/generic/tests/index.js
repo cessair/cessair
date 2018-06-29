@@ -1,7 +1,7 @@
 import { Type } from '@cessair/core';
 import generic from '../sources';
 
-test('should be able to instantiate generic class with various type arguments', test => {
+test('should be able to instantiate generic class with various type arguments', () => {
     @generic`T`
     class ContainerT {
         constructor(value, $) {
@@ -26,18 +26,18 @@ test('should be able to instantiate generic class with various type arguments', 
     function assertThrows(T, initialArgument, notThrows, throws) {
         const instance = new (ContainerT.$(T))(initialArgument);
 
-        test.notThrows(() => {
+        expect(() => {
             instance.value = notThrows;
-        });
+        }).not.toThrow();
 
-        test.throws(() => {
+        expect(() => {
             instance.value = throws;
-        }, TypeError);
+        }).toThrow(TypeError);
     }
 
     const instance = new (ContainerT.$(String))('Hello, world!');
 
-    test.true(Type.of(instance).is(ContainerT));
+    expect(Type.of(instance).is(ContainerT)).toBe(true);
 
     assertThrows(Boolean, true, false, 'Hello, world!');
     assertThrows(Number, 123, 456, 'Hello, world!');
@@ -49,15 +49,16 @@ test('should be able to instantiate generic class with various type arguments', 
     const StringContainer = ContainerT.$(String);
 
     assertThrows(
-        NumberContainer, new NumberContainer(123), new NumberContainer(456), new StringContainer('Hello, world!')
+        NumberContainer,
+        new NumberContainer(123),
+        new NumberContainer(456),
+        new StringContainer('Hello, world!')
     );
 
-    assertThrows(
-        ContainerT, new NumberContainer(123), new StringContainer('Hello, world!'), true
-    );
+    assertThrows(ContainerT, new NumberContainer(123), new StringContainer('Hello, world!'), true);
 });
 
-test('should be able to restrict type parameters by constraint keywords', test => {
+test('should be able to restrict type parameters by constraint keywords', () => {
     @generic`primitive T`
     class ContainerPrimitiveT {}
 
@@ -65,16 +66,11 @@ test('should be able to restrict type parameters by constraint keywords', test =
     class ContainerComplexT {}
 
     function assertThrows(T, notThrows, throws) {
-        test.notThrows(() => (
-            new (notThrows.$(T))()
-        ));
-
-        test.throws(() => (
-            new (throws.$(T))()
-        ), TypeError);
+        expect(() => new (notThrows.$(T))()).not.toThrow();
+        expect(() => new (throws.$(T))()).toThrow(TypeError);
     }
 
-    for(const item of [ undefined, null, Boolean, Symbol, Number, String ]) {
+    for (const item of [ undefined, null, Boolean, Symbol, Number, String ]) {
         assertThrows(item, ContainerPrimitiveT, ContainerComplexT);
     }
 
@@ -82,24 +78,16 @@ test('should be able to restrict type parameters by constraint keywords', test =
     assertThrows(Function, ContainerComplexT, ContainerPrimitiveT);
 });
 
-test('should be able to restrict type parameters by extending options', test => {
+test('should be able to restrict type parameters by extending options', () => {
     @generic`K, V extends K | ${String}`
     class ContainerKV {}
 
-    test.notThrows(() => (
-        new (ContainerKV.$(Number, String))()
-    ));
-
-    test.notThrows(() => (
-        new (ContainerKV.$(Number, Number))()
-    ));
-
-    test.throws(() => (
-        new (ContainerKV.$(Number, Boolean))()
-    ), TypeError);
+    expect(() => new (ContainerKV.$(Number, String))()).not.toThrow();
+    expect(() => new (ContainerKV.$(Number, Number))()).not.toThrow();
+    expect(() => new (ContainerKV.$(Number, Boolean))()).toThrow(TypeError);
 });
 
-test('should be able to set default argument to type parameters', test => {
+test('should be able to set default argument to type parameters', () => {
     @generic`K = ${String}, V = K`
     class ContainerKV {
         constructor($) {
@@ -109,37 +97,33 @@ test('should be able to set default argument to type parameters', test => {
 
     let instance = new (ContainerKV.$())();
 
-    test.is(instance.$.K, String);
-    test.is(instance.$.V, String);
+    expect(instance.$.K).toBe(String);
+    expect(instance.$.V).toBe(String);
 
     instance = new (ContainerKV.$(Number))();
 
-    test.is(instance.$.K, Number);
-    test.is(instance.$.V, Number);
+    expect(instance.$.K).toBe(Number);
+    expect(instance.$.V).toBe(Number);
 
     instance = new (ContainerKV.$(Symbol, Boolean))();
 
-    test.is(instance.$.K, Symbol);
-    test.is(instance.$.V, Boolean);
+    expect(instance.$.K).toBe(Symbol);
+    expect(instance.$.V).toBe(Boolean);
 
     @generic`A = ${String}, B = A, C`
     class ContainerABC {}
 
-    test.throws(() => (
-        new (ContainerABC.$())()
-    ), TypeError);
+    expect(() => new (ContainerABC.$())()).toThrow(TypeError);
 });
 
-test('should be able to work fine with very complex syntax', test => {
+test('should be able to work fine with very complex syntax', () => {
     @generic`primitive A, B : A | ${Boolean}, complex C = ${Object}, D : A | B | C, E extends D`
     class ContainerABCDE {}
 
-    test.notThrows(() => (
-        new (ContainerABCDE.$(String, Boolean, Object, Boolean, Boolean))()
-    ));
+    expect(() => new (ContainerABCDE.$(String, Boolean, Object, Boolean, Boolean))()).not.toThrow();
 });
 
-test('should be able to use type parameters at methods', test => {
+test('should be able to use type parameters at methods', () => {
     @generic`T = ${String}`
     class ContainerT {
         toUpperCase(name, $) {
@@ -151,5 +135,5 @@ test('should be able to use type parameters at methods', test => {
 
     const container = new (ContainerT.$())();
 
-    test.is(container.toUpperCase('cessair'), 'CESSAIR');
+    expect(container.toUpperCase('cessair')).toBe('CESSAIR');
 });
