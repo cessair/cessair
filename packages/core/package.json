@@ -1,6 +1,6 @@
 {
     "name": "@cessair/core",
-    "version": "1.1.8",
+    "version": "1.1.10",
     "description": "The core logic of Cessair.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {

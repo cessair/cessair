@@ -1,7 +1,7 @@
 {
-    "name": "@cessair/function",
-    "version": "1.0.5",
-    "description": "The interface for extending functions.",
+    "name": "@cessair/array",
+    "version": "1.0.0",
+    "description": "Extensions for Array global built-in object.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
         "url": "https://github.com/cessair/cessair/issues"
@@ -13,12 +13,12 @@
         "url": "https://www.cichol.com/"
     },
     "main": "releases",
-    "types": "function.d.ts",
+    "types": "array.d.ts",
     "directories": {
         "lib": "releases",
         "test": "tests"
     },
-    "repository": "https://github.com/cessair/cessair/tree/master/packages/function",
+    "repository": "https://github.com/cessair/cessair/tree/master/packages/array",
     "scripts": {
         "prepublishOnly": "node ../../scripts generate-npmignore",
         "build": "npm run build:babelrc && npm run build:transpile",
@@ -47,12 +47,12 @@
         "@babel/preset-env": "^7.0.0-beta.51",
         "@babel/register": "^7.0.0-beta.51",
         "babel-core": "^7.0.0-bridge.0",
-        "babel-eslint": "^8.2.5",
-        "babel-jest": "^23.2.0",
+        "babel-eslint": "^8.2.3",
+        "babel-jest": "^23.0.1",
         "eslint": "^4.19.1",
         "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.13.0",
-        "jest": "^23.2.0"
+        "eslint-plugin-import": "^2.12.0",
+        "jest": "^23.1.0"
     },
     "engines": {
         "node": ">=8.11.3",

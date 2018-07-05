@@ -17,6 +17,11 @@
         "type": "git",
         "url": "git+https://github.com/cessair/cessair.git"
     },
+    "scripts": {
+        "postinstall": "npm run build:helpers && npm run build:commands",
+        "build:helpers": "npx babel helpers --out-dir helpers --source-maps inline --quiet --extensions .mjs",
+        "build:commands": "npx babel commands --out-dir commands --source-maps inline --quiet --extensions .mjs"
+    },
     "dependencies": {
         "@babel/cli": "^7.0.0-beta.51",
         "@babel/core": "^7.0.0-beta.51",

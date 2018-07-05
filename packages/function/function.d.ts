@@ -1,6 +1,6 @@
 export {};
 
-type Type = (Function | Function[])[];
+type Constructor = new (...args: any[]) => any;
 
 declare global {
     interface Function {
@@ -30,221 +30,41 @@ declare global {
          *
          * @param types The type information.
          **/
-        typeHint(type0: Type): Function;
-        typeHint(type0: Type, type1: Type): Function;
-        typeHint(type0: Type, type1: Type, type2: Type): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, type3: Type): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, type3: Type, type4: Type): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, type3: Type, type4: Type, type5: Type): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, type3: Type, type4: Type, type5: Type, type6: Type): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            type18: Type
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            type18: Type,
-            type19: Type
-        ): Function;
+        typeHint<T0 extends Constructor>(type0: T0): (arg0: InstanceType<T0>) => any;
+        typeHint<T0 extends Constructor, T1 extends Constructor>(
+            type0: T0,
+            type1: T1
+        ): (arg0: InstanceType<T0>, arg1: InstanceType<T1>) => any;
+        typeHint<T0 extends Constructor, T1 extends Constructor, T2 extends Constructor>(
+            type0: T0,
+            type1: T1,
+            type2: T2
+        ): (arg0: InstanceType<T0>, arg1: InstanceType<T1>, arg2: InstanceType<T2>) => any;
+        typeHint<T0 extends Constructor, T1 extends Constructor, T2 extends Constructor, T3 extends Constructor>(
+            type0: T0,
+            type1: T1,
+            type2: T2,
+            type3: T3
+        ): (arg0: InstanceType<T0>, arg1: InstanceType<T1>, arg2: InstanceType<T2>, arg3: InstanceType<T3>) => any;
+        typeHint<
+            T0 extends Constructor,
+            T1 extends Constructor,
+            T2 extends Constructor,
+            T3 extends Constructor,
+            T4 extends Constructor
+        >(
+            type0: T0,
+            type1: T1,
+            type2: T2,
+            type3: T3,
+            type4: T4
+        ): (
+            arg0: InstanceType<T0>,
+            arg1: InstanceType<T1>,
+            arg2: InstanceType<T2>,
+            arg3: InstanceType<T3>,
+            arg4: InstanceType<T4>
+        ) => any;
 
         /**
          * Overload already declared function.
@@ -260,249 +80,22 @@ declare global {
          * @param attachment The attachment function to overload.
          **/
         overload(attachment: Function): Function;
-        overload(type0: Type, attachment: Function): Function;
-        overload(type0: Type, type1: Type, attachment: Function): Function;
-        overload(type0: Type, type1: Type, type2: Type, attachment: Function): Function;
-        overload(type0: Type, type1: Type, type2: Type, type3: Type, attachment: Function): Function;
-        overload(type0: Type, type1: Type, type2: Type, type3: Type, type4: Type, attachment: Function): Function;
+        overload(type0: Constructor, attachment: Function): Function;
+        overload(type0: Constructor, type1: Constructor, attachment: Function): Function;
+        overload(type0: Constructor, type1: Constructor, type2: Constructor, attachment: Function): Function;
         overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
+            type0: Constructor,
+            type1: Constructor,
+            type2: Constructor,
+            type3: Constructor,
             attachment: Function
         ): Function;
         overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            type18: Type,
-            attachment: Function
-        ): Function;
-        overload(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            type18: Type,
-            type19: Type,
+            type0: Constructor,
+            type1: Constructor,
+            type2: Constructor,
+            type3: Constructor,
+            type4: Constructor,
             attachment: Function
         ): Function;
     }
@@ -511,7 +104,8 @@ declare global {
         /**
          * Get unique identity of the target function.
          **/
-        getOwnIdentity(target?: Function): symbol;
+        getOwnIdentity<T extends Function | void>(target: T): symbol;
+        getOwnIdentity<T>(target: Exclude<T, Function | void>): never;
 
         /**
          * Make type-hinted function by given type information.
@@ -525,260 +119,79 @@ declare global {
          * @param types The type information.
          * @param context The target function.
          **/
-        typeHint(context: Function): Function;
-        typeHint(type0: Type, context: Function): Function;
-        typeHint(type0: Type, type1: Type, context: Function): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, context: Function): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, type3: Type, context: Function): Function;
-        typeHint(type0: Type, type1: Type, type2: Type, type3: Type, type4: Type, context: Function): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            type18: Type,
-            context: Function
-        ): Function;
-        typeHint(
-            type0: Type,
-            type1: Type,
-            type2: Type,
-            type3: Type,
-            type4: Type,
-            type5: Type,
-            type6: Type,
-            type7: Type,
-            type8: Type,
-            type9: Type,
-            type10: Type,
-            type11: Type,
-            type12: Type,
-            type13: Type,
-            type14: Type,
-            type15: Type,
-            type16: Type,
-            type17: Type,
-            type18: Type,
-            type19: Type,
-            context: Function
-        ): Function;
+        typeHint<F extends (...args: any[]) => any>(context: F): F;
+
+        typeHint<T0 extends Constructor, F extends (arg0: any) => any>(
+            type0: T0,
+            context: F
+        ): (arg0: InstanceType<T0>) => ReturnType<F>;
+
+        typeHint<T0 extends Constructor, T1 extends Constructor, F extends (arg0: any, arg1: any) => any>(
+            type0: T0,
+            type1: T1,
+            context: F
+        ): (arg0: InstanceType<T0>, arg1: InstanceType<T1>) => ReturnType<F>;
+
+        typeHint<
+            T0 extends Constructor,
+            T1 extends Constructor,
+            T2 extends Constructor,
+            F extends (arg0: any, arg1: any, arg2: any) => any
+        >(
+            type0: T0,
+            type1: T1,
+            type2: T2,
+            context: F
+        ): (arg0: InstanceType<T0>, arg1: InstanceType<T1>, arg2: InstanceType<T2>) => ReturnType<F>;
+
+        typeHint<
+            T0 extends Constructor,
+            T1 extends Constructor,
+            T2 extends Constructor,
+            T3 extends Constructor,
+            F extends (arg0: any, arg1: any, arg2: any, arg3: any) => any
+        >(
+            type0: T0,
+            type1: T1,
+            type2: T2,
+            type3: T2,
+            context: F
+        ): (
+            arg0: InstanceType<T0>,
+            arg1: InstanceType<T1>,
+            arg2: InstanceType<T2>,
+            arg3: InstanceType<T3>
+        ) => ReturnType<F>;
+
+        typeHint<
+            T0 extends Constructor,
+            T1 extends Constructor,
+            T2 extends Constructor,
+            T3 extends Constructor,
+            T4 extends Constructor,
+            F extends (arg0: any, arg1: any, arg2: any, arg3: any, arg4: any) => any
+        >(
+            type0: T0,
+            type1: T1,
+            type2: T2,
+            type3: T2,
+            type4: T3,
+            context: F
+        ): (
+            arg0: InstanceType<T0>,
+            arg1: InstanceType<T1>,
+            arg2: InstanceType<T2>,
+            arg3: InstanceType<T3>,
+            arg4: InstanceType<T4>
+        ) => ReturnType<F>;
 
         /**
          * Make overloaded function by given type information.
          *
          * @example
          * const numberOrString = Function.overload(overload => {
-         *     overload(Number, x => x);
-         *     overload(String, x => x)
+         * 		overload(Number, x => x);
+         * 		overload(String, x => x)
          * });
          *
          * numberOrString(true); // will throw TypeError
@@ -790,249 +203,22 @@ declare global {
         overload(
             describer: (
                 overload:
-                    | ((type0: Type, target: Function) => void)
-                    | ((type0: Type, type1: Type, target: Function) => void)
-                    | ((type0: Type, type1: Type, type2: Type, target: Function) => void)
-                    | ((type0: Type, type1: Type, type2: Type, type3: Type, target: Function) => void)
-                    | ((type0: Type, type1: Type, type2: Type, type3: Type, type4: Type, target: Function) => void)
+                    | ((type0: Constructor, target: Function) => void)
+                    | ((type0: Constructor, type1: Constructor, target: Function) => void)
+                    | ((type0: Constructor, type1: Constructor, type2: Constructor, target: Function) => void)
                     | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
+                          type0: Constructor,
+                          type1: Constructor,
+                          type2: Constructor,
+                          type3: Constructor,
                           target: Function
                       ) => void)
                     | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          type14: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          type14: Type,
-                          type15: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          type14: Type,
-                          type15: Type,
-                          type16: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          type14: Type,
-                          type15: Type,
-                          type16: Type,
-                          type17: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          type14: Type,
-                          type15: Type,
-                          type16: Type,
-                          type17: Type,
-                          type18: Type,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Type,
-                          type1: Type,
-                          type2: Type,
-                          type3: Type,
-                          type4: Type,
-                          type5: Type,
-                          type6: Type,
-                          type7: Type,
-                          type8: Type,
-                          type9: Type,
-                          type10: Type,
-                          type11: Type,
-                          type12: Type,
-                          type13: Type,
-                          type14: Type,
-                          type15: Type,
-                          type16: Type,
-                          type17: Type,
-                          type18: Type,
-                          type19: Type,
+                          type0: Constructor,
+                          type1: Constructor,
+                          type2: Constructor,
+                          type3: Constructor,
+                          type4: Constructor,
                           target: Function
                       ) => void)
             ) => void

@@ -41,7 +41,7 @@ function getHandler(typeInformation) {
  * return new NumericContainer(...);
  *
  * @param {string[]} source
- * @param {...*} references
+ * @param {(new (...args: any) => any)[]} references
  * @returns {ClassDecorator}
  */
 export default function generic(source, ...references) {

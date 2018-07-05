@@ -3,7 +3,7 @@ import childProcess from 'child_process';
 import { cwd, env } from 'process';
 
 // Third-party modules.
-import Promise from 'bluebird';
+import { Promise } from 'bluebird';
 
 export default async function execute(command, options = {}) {
     const [ method, ...args ] = command.split(' ');
@@ -28,8 +28,8 @@ export default async function execute(command, options = {}) {
 
     try {
         await deferred.promise;
-    } catch(error) {
-        if(error) {
+    } catch (error) {
+        if (error) {
             throw error;
         }
 

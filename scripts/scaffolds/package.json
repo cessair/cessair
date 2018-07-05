@@ -18,9 +18,9 @@
     },
     "repository": "https://github.com/cessair/cessair/tree/master/packages/",
     "scripts": {
-        "prepublishOnly": "cessair generate-npmignore",
+        "prepublishOnly": "node ../../scripts generate-npmignore",
         "build": "npm run build:babelrc && npm run build:transpile",
-        "build:babelrc": "cessair generate-babelrc",
+        "build:babelrc": "node ../../scripts generate-babelrc",
         "build:transpile": "npx babel sources --out-dir releases --source-maps inline --quiet",
         "test": "npm run test:eslint && npm run test:jest",
         "test:eslint": "npx eslint sources",

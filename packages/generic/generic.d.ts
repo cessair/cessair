@@ -12,4 +12,4 @@
  * @param source
  * @param references
  */
-export function generic(source: string[], ...references: any[]): ClassDecorator;
+export function generic(source: string[], ...references: (new (...args: any[]) => any)[]): ClassDecorator;
