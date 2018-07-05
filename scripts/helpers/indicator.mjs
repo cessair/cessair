@@ -9,9 +9,9 @@ export default function indicate(message) {
 }
 
 export function shutdown(errorOrMessage, exitCode = 1) {
-    if(exitCode === 0) {
+    if (exitCode === 0) {
         stdout.write(errorOrMessage);
-    } else if(errorOrMessage) {
+    } else if (errorOrMessage) {
         indicate().fail(errorOrMessage instanceof Error ? errorOrMessage.stack : errorOrMessage);
     }
 

@@ -7,7 +7,7 @@ Function.expands({
     /**
      * Get unique identity of the target function.
      *
-     * @param {Function?} target
+     * @param {Function} [target]
      * @returns {symbol}
      **/
     getOwnIdentity(target) {
@@ -48,7 +48,7 @@ Function.extends({
     /**
      * Get the prototype chain of the function.
      *
-     * @returns {Function[]}
+     * @returns {any[]}
      **/
     get prototypeChain() {
         const chain = [];
@@ -63,7 +63,7 @@ Function.extends({
     /**
      * Get the inheritance chain of the function.
      *
-     * @returns {Function[]}
+     * @returns {any[]}
      **/
     get inheritanceChain() {
         return this.prototypeChain.map(prototype => prototype.constructor || prototype);

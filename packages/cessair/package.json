@@ -1,6 +1,6 @@
 {
     "name": "cessair",
-    "version": "1.2.4",
+    "version": "1.3.0",
     "description": "The catalyst for making a robust and stable core of either module or service.",
     "homepage": "https://github.com/cessair/cessair#readme",
     "bugs": {
@@ -15,8 +15,7 @@
     "main": "releases",
     "types": "index.d.ts",
     "directories": {
-        "lib": "releases",
-        "test": "tests"
+        "lib": "releases"
     },
     "repository": {
         "type": "git",
@@ -31,10 +30,12 @@
         "test:eslint": "npx eslint sources"
     },
     "dependencies": {
-        "@cessair/common": "^1.1.8",
-        "@cessair/core": "^1.1.8",
-        "@cessair/function": "^1.0.3",
-        "@cessair/generic": "^1.1.8"
+        "@cessair/common": "^1.1.10",
+        "@cessair/core": "^1.1.10",
+        "@cessair/function": "^1.0.5",
+        "@cessair/generic": "^1.1.9",
+        "@cessair/object": "^1.0.0",
+        "@cessair/array": "^1.0.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0-beta.51",

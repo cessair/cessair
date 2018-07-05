@@ -11,6 +11,10 @@ node_modules
 # Released contents
 releases
 
+# Scripts
+scripts/commands/*.js
+scripts/helpers/*.js
+
 # Dependency files for publishing
 packages/*/.babelrc
 packages/*/.npmignore

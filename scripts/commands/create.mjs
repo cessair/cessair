@@ -84,6 +84,7 @@ export async function handler({ packages }) {
             dependencies: {
                 ...scaffoldPackage.dependencies,
 
+                '@babel/runtime': devDependencies['@babel/core'],
                 '@cessair/common': `^${commonVersion}`,
                 '@cessair/core': `^${coreVersion}`
             },

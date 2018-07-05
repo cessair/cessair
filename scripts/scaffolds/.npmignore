@@ -6,3 +6,6 @@ sources
 
 # Unit tests
 tests
+
+# Dependency files for publishing
+.babelrc

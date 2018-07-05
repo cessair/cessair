@@ -2,8 +2,9 @@ declare global {
     interface Object {
         /**
          * Expand the object by a given object.
+         *
          * This method is not the same as `Object.assign`.
-         * This method will copy and paste all property descriptor of a given object to the object.
+         * and it will copy and paste all property descriptor of a given object to the object.
          *
          * @param descriptors An object to use expanding the object.
          * @param overriding If this value is `false`, not paste already existing property. the default value is `true`.
@@ -15,8 +16,9 @@ declare global {
     interface Function {
         /**
          * Extend the prototype of the function by a given object.
+         *
          * This method is almost same as the partial definition of class.
-         * This method will copy and paste all property descriptor of a given object to the prototype of the function.
+         * and it will copy and paste all property descriptor of a given object to the prototype of the function.
          *
          * @param descriptors An object to use extending the prototype of the function.
          * @param overriding If this value is `false`, not paste already existing property. the default value is `true`.
@@ -26,38 +28,17 @@ declare global {
     }
 }
 
-interface Constructor {
-    readonly prototype: any;
-}
+type Constructor = new (...args: any[]) => any;
+type IsInherited<Inheritor, Inheritee extends Constructor> = Inheritor extends InstanceType<Inheritee> ? true : false;
+type IsInheritable<T, NonInheritable, Inheritable> = T extends void ? NonInheritable : Inheritable;
 
-/**
- * @example
- * // Capable.
- * undefined, null, Function;
- *
- * // Incapable.
- * true, 1, 'a', Symbol(), {};
- **/
-type Capable = undefined | null | Constructor;
-
-export class Type<T> {
+interface Type<T> {
     /**
-     * Encasulate as a type from source instance.
-     **/
-    constructor(source: Capable);
-
-    /**
-     * Get type of instance.
-     **/
-    static of<U>(target: U): Type<U>;
-
-    /**
-     * Find or create type instance from source instance.
-     **/
-    static from<U>(source: U): Type<U>;
-
-    /**
-     * Test type equivalence by provided target.
+     * Test type equivalence by given constructor.
+     *
+     * In the specification of TypeScript, `null` and `undefined` will be recognized the same.
+     * but in the real world, they are not the same.
+     * so you have to beware of using this function to check nullable.
      *
      * @example
      * // Exactly same as target constructor.
@@ -73,7 +54,17 @@ export class Type<T> {
      * Type.of(true) === Type.of(false); // true
      * Type.of(1) === Type.of('1'); // false
      **/
-    is(target: Capable | Capable[]): boolean;
+    is(target: void | void[]): IsInheritable<T, boolean, false>;
+
+    is<Constructible extends Constructor>(
+        target: Constructible
+    ): IsInheritable<T, false, IsInherited<T, Constructible>>;
+
+    is<Constructible extends Constructor>(
+        target: Constructible[]
+    ): IsInheritable<T, boolean, IsInherited<T, Constructible>>;
+
+    is<NonConstructible>(target: NonConstructible): never;
 
     /**
      * Name of encapsulated type.
@@ -81,13 +72,28 @@ export class Type<T> {
      * @example
      * Type.of(1).name === 'Type<Number>'; // true
      **/
-    name: string;
+    readonly name: string;
+}
+
+interface TypeConstructor {
+    /**
+     * Encasulate as a type from source instance.
+     **/
+    new (source: void): Type<void>;
+    new <Constructible extends Constructor>(source: Constructible): Type<InstanceType<Constructible>>;
 
     /**
-     * Define tag for inherited property `Object.prototype.toString`.
-     *
-     * @example
-     * Type.of(1).toString() === '[object Type<Number>]'; // true
+     * Get type of instance.
      **/
-    [Symbol.toStringTag]: string;
+    of<V extends void>(target: V): Type<void>;
+    of<F extends Function>(target: F): Type<Function>;
+    of<T>(target: T): Type<T>;
+
+    /**
+     * Find or create type instance from source instance.
+     **/
+    from(source: void): Type<void>;
+    from<Constructible extends Constructor>(source: Constructible): Type<InstanceType<Constructible>>;
 }
+
+export const Type: TypeConstructor;

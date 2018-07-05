@@ -1,8 +1,10 @@
+import '@cessair/core';
+
 const tokenTable = new Map();
 
 export default class Token {
-    constructor(name, start, end) {
-        this.expands({ name, start, end });
+    constructor(start, end) {
+        this.expands({ start, end });
 
         Object.freeze(this);
     }
@@ -12,14 +14,10 @@ export default class Token {
             return tokenTable.get(name);
         }
 
-        tokenTable.set(
-            name,
-            class extends Token {
-                constructor(start, end) {
-                    super(name, start, end);
-                }
-            }
-        );
+        class SubToken extends Token {}
+
+        SubToken.expands({ name: `Token<${name}>` });
+        tokenTable.set(name, SubToken);
 
         Token.expands({
             get [name]() {

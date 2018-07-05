@@ -26,8 +26,10 @@
         "test:eslint": "npx eslint packages/*/sources",
         "test:jest": "npx lerna exec -- npm test"
     },
+    "dependencies": {
+        "@cessair/scripts": "./scripts"
+    },
     "devDependencies": {
-        "@cessair/scripts": "./scripts",
         "babel-eslint": "^8.2.3",
         "esdoc": "^1.1.0",
         "esdoc-ecmascript-proposal-plugin": "^1.0.0",

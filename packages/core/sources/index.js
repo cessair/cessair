@@ -1,3 +1,3 @@
 import './extender';
 
-export Type from './typing';
+export Type, { sourceCache } from './typing';
