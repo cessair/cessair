@@ -63,7 +63,9 @@ export default function generic(source, ...references) {
              **/
             constructor(passport, args, typeInformation) {
                 if (passport !== genericPassport) {
-                    throw new TypeError(`Generic class constructor ${name} cannot be constructed without type arguments`); // eslint-disable-line max-len
+                    throw new TypeError(
+                        `Generic class constructor ${name} cannot be constructed without type arguments`
+                    ); // eslint-disable-line max-len
                 }
 
                 super(...args, typeInformation);
@@ -76,10 +78,12 @@ export default function generic(source, ...references) {
              * @returns {Container}
              **/
             static $(...typeArguments) {
-                const typeInformation = deduceArguments(typeArguments.length &&
-                    typeArguments.map(Type.of).every(type => type.is([ undefined, null, Function ]))
-                    ? typeArguments
-                    : typeArguments[0] || {});
+                const typeInformation = deduceArguments(
+                    typeArguments.length
+                    && typeArguments.map(Type.of).every(type => type.is([ undefined, null, Function ]))
+                        ? typeArguments
+                        : typeArguments[0] || {}
+                );
 
                 const instanceCache = containerCache.get(this);
 

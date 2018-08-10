@@ -1,3 +1,8 @@
+// Type definitions for @cessair/array 1.0.1
+// Definitions by: Yongbin Min <https://www.cichol.com>
+// Definitions: https://github.com/cessair/cessair
+// TypeScript Version: 3.0
+
 export {};
 
 declare global {

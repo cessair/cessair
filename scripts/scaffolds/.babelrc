@@ -4,7 +4,7 @@
             "@babel/preset-env",
             {
                 "targets": {
-                    "node": "v8.11.2"
+                    "node": "v8.11.3"
                 }
             }
         ]
@@ -36,9 +36,7 @@
         [
             "@babel/plugin-transform-runtime",
             {
-                "polyfill": false,
-                "regenerator": false,
-                "useBuiltIns": true
+                "regenerator": false
             }
         ]
     ]

@@ -30,23 +30,17 @@
         "@cessair/scripts": "./scripts"
     },
     "devDependencies": {
-        "babel-eslint": "^8.2.3",
+        "babel-eslint": "^8.2.6",
         "esdoc": "^1.1.0",
         "esdoc-ecmascript-proposal-plugin": "^1.0.0",
         "esdoc-standard-plugin": "^1.0.0",
         "eslint": "^4.19.1",
-        "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.12.0",
-        "husky": "^0.14.3",
-        "lerna": "^2.11.0"
+        "eslint-config-airbnb-base": "^13.0.0",
+        "eslint-plugin-import": "^2.13.0",
+        "lerna": "^3.0.1"
     },
     "engines": {
-        "node": ">=8.11.2",
-        "npm": ">=6.1.0"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "echo 'CHECK COMMIT MESSAGE GUIDELINE and LOCAL TEST'"
-        }
+        "node": ">=8.11.3",
+        "npm": ">=6.3.0"
     }
 }
