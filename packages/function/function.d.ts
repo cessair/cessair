@@ -1,3 +1,8 @@
+// Type definitions for @cessair/function 1.0.6
+// Definitions by: Yongbin Min <https://www.cichol.com>
+// Definitions: https://github.com/cessair/cessair
+// TypeScript Version: 3.0
+
 export {};
 
 type Constructor = new (...args: any[]) => any;
@@ -203,24 +208,24 @@ declare global {
         overload(
             describer: (
                 overload:
-                    | ((type0: Constructor, target: Function) => void)
-                    | ((type0: Constructor, type1: Constructor, target: Function) => void)
-                    | ((type0: Constructor, type1: Constructor, type2: Constructor, target: Function) => void)
-                    | ((
-                          type0: Constructor,
-                          type1: Constructor,
-                          type2: Constructor,
-                          type3: Constructor,
-                          target: Function
-                      ) => void)
-                    | ((
-                          type0: Constructor,
-                          type1: Constructor,
-                          type2: Constructor,
-                          type3: Constructor,
-                          type4: Constructor,
-                          target: Function
-                      ) => void)
+                | ((type0: Constructor, target: Function) => void)
+                | ((type0: Constructor, type1: Constructor, target: Function) => void)
+                | ((type0: Constructor, type1: Constructor, type2: Constructor, target: Function) => void)
+                | ((
+                    type0: Constructor,
+                    type1: Constructor,
+                    type2: Constructor,
+                    type3: Constructor,
+                    target: Function
+                ) => void)
+                | ((
+                    type0: Constructor,
+                    type1: Constructor,
+                    type2: Constructor,
+                    type3: Constructor,
+                    type4: Constructor,
+                    target: Function
+                ) => void)
             ) => void
         ): Function;
     }

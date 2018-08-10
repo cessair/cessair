@@ -72,7 +72,9 @@ Object.expands({
                         continue;
                     }
 
-                    throw new TypeError(`${propertyKey} ${String(value)} is not an instance of ${(type && type.name) || type}`); // eslint-disable-line max-len
+                    throw new TypeError(
+                        `${propertyKey} ${String(value)} is not an instance of ${(type && type.name) || type}`
+                    ); // eslint-disable-line max-len
                 }
 
                 const memory = new Map();
@@ -97,8 +99,10 @@ Object.expands({
                                 if (!Type.of(value).is(type)) {
                                     /* eslint-disable max-len */
 
-                                    throw new TypeError(`${propertyKey}] ${String(value)} is not an instance of ${(type && type.name) ||
-                                            type}`);
+                                    throw new TypeError(
+                                        `${propertyKey}] ${String(value)} is not an instance of ${(type && type.name)
+                                            || type}`
+                                    );
 
                                     /* eslint-enable max-len */
                                 }

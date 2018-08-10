@@ -60,8 +60,8 @@ Function.expands({
 
             for (const type of types) {
                 if (
-                    (Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType))) ||
-                    Type.of(type).is(AnyType)
+                    (Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType)))
+                    || Type.of(type).is(AnyType)
                 ) {
                     continue;
                 }
@@ -77,12 +77,13 @@ Function.expands({
                 {
                     toString() {
                         return `function ${contextName}(${types
-                            .map((type, index) =>
-                                `$${index}: ${
+                            .map(
+                                (type, index) => `$${index}: ${
                                     Array.isArray(type)
                                         ? type.map(type => `${!type ? type : type.name}`).join(' | ')
                                         : `${!type ? type : type.name}`
-                                }`)
+                                }`
+                            )
                             .join(', ')}) { [overloaded function] }`;
                     }
                 },
@@ -117,18 +118,20 @@ Function.expands({
         overloaded.expands({
             toString() {
                 return [ ...overloadedSet, { otherwise } ]
-                    .map(({ types, otherwise }, index) =>
-                        (otherwise
-                            ? `function ${otherwise.name ||
-                                      'otherwise'}() { [overloaded function : case otherwise] }`
+                    .map(
+                        ({ types, otherwise }, index) => (otherwise
+                            ? `function ${otherwise.name
+                                      || 'otherwise'}() { [overloaded function : case otherwise] }`
                             : `function ${contextName}(${types
-                                .map((type, index) =>
-                                    `$${index}: ${
+                                .map(
+                                    (type, index) => `$${index}: ${
                                         Array.isArray(type)
                                             ? type.map(type => `${!type ? type : type.name}`).join(' | ')
                                             : `${!type ? type : type.name}`
-                                    }`)
-                                .join(', ')}) { [overloaded function : case ${index}] }`))
+                                    }`
+                                )
+                                .join(', ')}) { [overloaded function : case ${index}] }`)
+                    )
                     .join('\n');
             }
         });
