@@ -26,9 +26,11 @@ function assertIdentifier(constraint, typeParameters, identifier) {
     }
 
     if (constraint !== Constraint.Any && constraint !== typeParameters[identifier].constraint) {
-        throw new TypeError(`Constraint of type parameter ${identifier} is not ${
-            constraint === Constraint.Primitive ? 'primitive' : 'complex'
-        }`);
+        throw new TypeError(
+            `Constraint of type parameter ${identifier} is not ${
+                constraint === Constraint.Primitive ? 'primitive' : 'complex'
+            }`
+        );
     }
 }
 
@@ -37,11 +39,12 @@ function assertReference(constraint, reference) {
         throw new TypeError(`Reference '${reference}' is not referenceable`);
     }
 
-    const primitiveness = [ undefined, null, Boolean, Symbol, Number, String ].some(item =>
-        item === reference ||
-            (item &&
-                ((reference !== Function && reference !== Object && item instanceof reference) ||
-                    item.isPrototypeOf(reference))));
+    const primitiveness = [ undefined, null, Boolean, Symbol, Number, String ].some(
+        item => item === reference
+            || (item
+                && ((reference !== Function && reference !== Object && item instanceof reference)
+                    || item.isPrototypeOf(reference)))
+    );
 
     if (constraint === Constraint.Primitive && !primitiveness) {
         throw new TypeError('Primitive constraint able to extend undefined, null, Boolean, Symbol, Number, String');
@@ -105,8 +108,8 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             Object.assign(sharedStorage, { typeParameter });
 
             if (
-                !currentType.is([ Token.Start, Token.ConjunctionNext, Token.End ]) ||
-                (currentType.is(Token.ConjunctionNext) && nextType.is(Token.End))
+                !currentType.is([ Token.Start, Token.ConjunctionNext, Token.End ])
+                || (currentType.is(Token.ConjunctionNext) && nextType.is(Token.End))
             ) {
                 throw new SyntaxError(`Unexpected token ${source.slice(current.start, current.end)}`);
             }
@@ -320,9 +323,11 @@ export default function semanticAnalyze(source, tokens, identifiers, references)
             assertReference(constraint, candidate);
 
             if (extending.length && !Type.from(candidate).is(extending)) {
-                throw new TypeError(`Type parameter '${identifier}' have to be ${extending
-                    .map(parameter => `${parameter && parameter.name}`)
-                    .join(' or ')}`);
+                throw new TypeError(
+                    `Type parameter '${identifier}' have to be ${extending
+                        .map(parameter => `${parameter && parameter.name}`)
+                        .join(' or ')}`
+                );
             }
 
             parameter.value = candidate;

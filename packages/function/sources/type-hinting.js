@@ -34,8 +34,8 @@ Function.expands({
 
         for (const type of types) {
             if (
-                (Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType))) ||
-                Type.of(type).is(AnyType)
+                (Array.isArray(type) && type.map(Type.of).every(type => type.is(AnyType)))
+                || Type.of(type).is(AnyType)
             ) {
                 continue;
             }
@@ -56,19 +56,21 @@ Function.expands({
                 const type = types[index];
 
                 if (
-                    (Array.isArray(type) && type.some(type => Type.of(argument).is(type))) ||
-                    Type.of(argument).is(type)
+                    (Array.isArray(type) && type.some(type => Type.of(argument).is(type)))
+                    || Type.of(argument).is(type)
                 ) {
                     continue;
                 }
 
                 /* eslint-disable max-len */
 
-                throw new TypeError(`${index + 1 + [ 'st', 'nd', 'rd' ][index % 10] || 'th'} argument have to be an instance of ${
-                    Array.isArray(type)
-                        ? type.map(type => (!type && `${type}`) || type.name).join(' or ')
-                        : (!type && `${type}`) || type.name
-                }`);
+                throw new TypeError(
+                    `${index + 1 + [ 'st', 'nd', 'rd' ][index % 10] || 'th'} argument have to be an instance of ${
+                        Array.isArray(type)
+                            ? type.map(type => (!type && `${type}`) || type.name).join(' or ')
+                            : (!type && `${type}`) || type.name
+                    }`
+                );
 
                 /* eslint-enable max-len */
             }
@@ -81,12 +83,13 @@ Function.expands({
         typeHinted.expands({
             toString() {
                 return `function ${contextName}(${types
-                    .map((type, index) =>
-                        `$${index}: ${
+                    .map(
+                        (type, index) => `$${index}: ${
                             Array.isArray(type)
                                 ? type.map(type => `${!type ? type : type.name}`).join(' | ')
                                 : `${!type ? type : type.name}`
-                        }`)
+                        }`
+                    )
                     .join(', ')}) { [type hinted function] }`;
             }
         });

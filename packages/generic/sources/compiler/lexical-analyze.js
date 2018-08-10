@@ -51,18 +51,18 @@ export default function lexicalAnalyze(source) {
 
     for (position = 0; position < maximum; position += 1) {
         if (
-            tokenize([ 32 ]) ||
-            tokenize([ 92, 35 ], undefined, () => {
+            tokenize([ 32 ])
+            || tokenize([ 92, 35 ], undefined, () => {
                 identifiers[tokens.push(new Token.Identifier(position, position + 2)) - 1] = '\\#';
-            }) ||
-            tokenize([ 35 ], Token.Reference) ||
-            tokenize([ 44 ], Token.ConjunctionNext) ||
-            tokenize([ 58 ], Token.Extends) ||
-            tokenize([ 61 ], Token.Substitution) ||
-            tokenize([ 124 ], Token.ConjunctionOr) ||
-            tokenize([ 112, 114, 105, 109, 105, 116, 105, 118, 101, 32 ], Token.ConstraintPrimitive) ||
-            tokenize([ 99, 111, 109, 112, 108, 101, 120, 32 ], Token.ConstraintComplex) ||
-            tokenize([ 101, 120, 116, 101, 110, 100, 115, 32 ], Token.Extends)
+            })
+            || tokenize([ 35 ], Token.Reference)
+            || tokenize([ 44 ], Token.ConjunctionNext)
+            || tokenize([ 58 ], Token.Extends)
+            || tokenize([ 61 ], Token.Substitution)
+            || tokenize([ 124 ], Token.ConjunctionOr)
+            || tokenize([ 112, 114, 105, 109, 105, 116, 105, 118, 101, 32 ], Token.ConstraintPrimitive)
+            || tokenize([ 99, 111, 109, 112, 108, 101, 120, 32 ], Token.ConstraintComplex)
+            || tokenize([ 101, 120, 116, 101, 110, 100, 115, 32 ], Token.Extends)
         ) {
             continue;
         }

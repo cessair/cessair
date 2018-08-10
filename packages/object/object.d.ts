@@ -1,10 +1,15 @@
+// Type definitions for @cessair/object 1.0.1
+// Definitions by: Yongbin Min <https://www.cichol.com>
+// Definitions: https://github.com/cessair/cessair
+// TypeScript Version: 3.0
+
 export {};
 
 type Primitive = boolean | number | string | symbol | void;
-type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T];
-type Glaciated<T> = T extends any[] ? GlaciatedArray<T[number]> : T extends Primitive ? T : GlaciatedObject<T>;
+type NonFunctionPropertyNames < T > = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T];
+type Glaciated < T > = T extends any[] ? GlaciatedArray<T[number]> : T extends Primitive ? T : GlaciatedObject<T>;
 interface GlaciatedArray<T> extends ReadonlyArray<Glaciated<T>> {}
-type GlaciatedObject<T> = { readonly [P in NonFunctionPropertyNames<T>]: Glaciated<T[P]> };
+type GlaciatedObject < T > = { readonly [P in NonFunctionPropertyNames<T>]: Glaciated<T[P]> };
 
 declare global {
     interface ObjectConstructor {

@@ -1,3 +1,8 @@
+// Type definitions for @cessair/core 1.1.11
+// Definitions by: Yongbin Min <https://www.cichol.com>
+// Definitions: https://github.com/cessair/cessair
+// TypeScript Version: 3.0
+
 declare global {
     interface Object {
         /**
@@ -29,8 +34,8 @@ declare global {
 }
 
 type Constructor = new (...args: any[]) => any;
-type IsInherited<Inheritor, Inheritee extends Constructor> = Inheritor extends InstanceType<Inheritee> ? true : false;
-type IsInheritable<T, NonInheritable, Inheritable> = T extends void ? NonInheritable : Inheritable;
+type IsInherited < Inheritor , Inheritee extends Constructor > = Inheritor extends InstanceType<Inheritee> ? true : false;
+type IsInheritable < T , NonInheritable, Inheritable> = T extends void ? NonInheritable : Inheritable;
 
 interface Type<T> {
     /**
